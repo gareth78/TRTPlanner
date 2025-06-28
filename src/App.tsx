@@ -1,15 +1,7 @@
-import { useSelector } from 'react-redux';
-import type { RootState } from './store/store';
-import './App.css';
+import Home from './pages/Home';
 
-function App() {
-  const message = useSelector((state: RootState) => state.message);
-
-  return (
-    <div className="app-container">
-      <h1>{message}</h1>
-    </div>
-  );
-}
+const App = () => {
+  return <Home />;
+};
 
 export default App;
