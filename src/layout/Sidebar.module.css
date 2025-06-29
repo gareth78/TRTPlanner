@@ -81,18 +81,23 @@
 }
 
 .version {
-  font-size: 1rem;
-  color: #e2e8f0;
-  text-align: center;
-  margin-top: 1rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 0.875rem;
+  color: #ffffff;
+  font-style: italic;
+  border-top: 1px solid #475569;
+  padding-top: 0.5rem;
+  width: calc(100% - 2rem);
 }
 
 .toggleButton {
   position: fixed;
   top: 1rem;
   left: 1rem;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border: 2px solid #ffffff;
   border-radius: 50%;
   background: #1e293b;
@@ -121,6 +126,10 @@
 
 .icon {
   color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.25rem;
   transition: transform 0.3s ease;
 }
 
