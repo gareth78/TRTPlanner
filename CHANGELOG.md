@@ -18,3 +18,5 @@
 - 2025-06-29 22:49 · Add Oral Schedule page and conditional sidebar visibility based on enabled medications · v0.0.0020
 - 2025-06-29 22:56 · Unspecified task · v0.0.0021
 - 2025-06-29 22:59 · Conditionally display schedule pages in sidebar based on enabled medication entries · v0.0.0022
+- 2025-06-29 23:10 · Unspecified task · v0.0.0023
+- 2025-06-29 23:12 · Add Wikipedia info button to injectable and oral medication inputs · v0.0.0024

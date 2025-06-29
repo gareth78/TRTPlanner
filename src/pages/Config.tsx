@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
+import { FiInfo } from 'react-icons/fi';
 import styles from './Config.module.css';
 
 interface Medication {
@@ -15,7 +16,6 @@ function Config() {
   const [injDragIndex, setInjDragIndex] = useState<number | null>(null);
   const [oralDragIndex, setOralDragIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
-
 
   const addInjectable = () => {
     setInjectables([...injectables, { name: '', disabled: false }]);
@@ -95,6 +95,13 @@ function Config() {
     updated.splice(index, 0, moved);
     setOrals(updated);
     setOralDragIndex(null);
+  };
+
+  const openWikipedia = (med: string) => {
+    const query = med.trim();
+    if (!query) return;
+    const url = `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => {
@@ -216,6 +223,16 @@ function Config() {
               <button
                 type="button"
                 className={styles.iconButton}
+                onClick={() => openWikipedia(inj.name)}
+                aria-label={`Search Wikipedia for ${inj.name}`}
+                title={`Search Wikipedia for ${inj.name}`}
+                disabled={!inj.name.trim()}
+              >
+                <FiInfo size={20} />
+              </button>
+              <button
+                type="button"
+                className={styles.iconButton}
                 onClick={() => deleteInjectable(idx)}
                 aria-label="Delete injectable"
               >
@@ -224,7 +241,11 @@ function Config() {
             </div>
           </div>
         ))}
-        <button type="button" className={styles.addButton} onClick={addInjectable}>
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={addInjectable}
+        >
           Add another
         </button>
 
@@ -258,6 +279,16 @@ function Config() {
                 aria-label={oral.disabled ? 'Enable oral' : 'Disable oral'}
               >
                 <GiSightDisabled size={20} />
+              </button>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => openWikipedia(oral.name)}
+                aria-label={`Search Wikipedia for ${oral.name}`}
+                title={`Search Wikipedia for ${oral.name}`}
+                disabled={!oral.name.trim()}
+              >
+                <FiInfo size={20} />
               </button>
               <button
                 type="button"

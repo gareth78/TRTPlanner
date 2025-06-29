@@ -172,6 +172,11 @@
   background: #cbd5e1;
 }
 
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .dragHandle {
   cursor: move;
   color: #64748b;
