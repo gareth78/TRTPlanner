@@ -82,3 +82,19 @@
   font-weight: 500;
   text-align: center;
 }
+
+.addButton,
+.removeButton {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #f1f5f9;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.removeButton {
+  background: #fecaca;
+  border-color: #fca5a5;
+}

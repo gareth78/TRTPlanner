@@ -6,6 +6,8 @@ function Config() {
   const [trt, setTrt] = useState('');
   const [hcg, setHcg] = useState('');
   const [saved, setSaved] = useState(false);
+  const [useInjectables, setUseInjectables] = useState(false);
+  const [injectables, setInjectables] = useState<{ name: string }[]>([]);
 
   useEffect(() => {
     const stored = localStorage.getItem('configSettings');
@@ -15,6 +17,10 @@ function Config() {
         setName(parsed.name ?? '');
         setTrt(parsed.trt ?? '');
         setHcg(parsed.hcg ?? '');
+        if (Array.isArray(parsed.injectables)) {
+          setInjectables(parsed.injectables);
+          setUseInjectables(parsed.injectables.length > 0);
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error('Failed to parse settings', e);
@@ -24,10 +30,31 @@ function Config() {
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = { name, trt, hcg };
+    const data = {
+      name,
+      trt,
+      hcg,
+      injectables: useInjectables
+        ? injectables.filter((i) => i.name.trim() !== '')
+        : [],
+    };
     localStorage.setItem('configSettings', JSON.stringify(data));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const addInjectable = () => {
+    setInjectables((prev) => [...prev, { name: '' }]);
+  };
+
+  const removeInjectable = (index: number) => {
+    setInjectables((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const updateInjectable = (index: number, value: string) => {
+    setInjectables((prev) =>
+      prev.map((inj, i) => (i === index ? { name: value } : inj))
+    );
   };
 
   return (
@@ -77,6 +104,67 @@ function Config() {
             </select>
           </label>
         </div>
+        <div className={styles.formGroup}>
+          <span className={styles.label}>
+            Are you taking any of the peptides or injectables you wish recorded?
+          </span>
+          <label htmlFor="injectYes">
+            <input
+              id="injectYes"
+              type="radio"
+              name="injectables"
+              checked={useInjectables}
+              onChange={() => {
+                setUseInjectables(true);
+                if (injectables.length === 0) setInjectables([{ name: '' }]);
+              }}
+            />
+            Yes
+          </label>
+          <label htmlFor="injectNo">
+            <input
+              id="injectNo"
+              type="radio"
+              name="injectables"
+              checked={!useInjectables}
+              onChange={() => setUseInjectables(false)}
+            />
+            No
+          </label>
+        </div>
+        {useInjectables && (
+          <div className={styles.formGroup}>
+            <span className={styles.label}>Injectables</span>
+            {injectables.map((inj, idx) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={idx} className={styles.formGroup}>
+                <input
+                  type="text"
+                  className={styles.input}
+                  placeholder={`Injectable ${idx + 1}`}
+                  value={inj.name}
+                  onChange={(e) => updateInjectable(idx, e.target.value)}
+                />
+                {injectables.length > 1 && (
+                  <button
+                    type="button"
+                    className={styles.removeButton}
+                    onClick={() => removeInjectable(idx)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              className={styles.addButton}
+              onClick={addInjectable}
+            >
+              Add another
+            </button>
+          </div>
+        )}
         <button type="submit" className={styles.saveButton}>
           Save
         </button>
