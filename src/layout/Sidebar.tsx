@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
-import { MdMenu } from 'react-icons/md';
+import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/trt_logo.svg';
 import styles from './Sidebar.module.css';
@@ -23,7 +23,14 @@ function Sidebar() {
         onClick={toggle}
         className={`${styles.toggleButton} ${open ? styles.buttonOpen : ''}`}
       >
-        <MdMenu />
+        {open ? (
+          <MdClose
+            className={`${styles.icon} ${styles.iconOpen}`}
+            color="white"
+          />
+        ) : (
+          <MdMenu className={styles.icon} color="white" />
+        )}
       </button>
       <aside className={`${styles.sidebar} ${!open ? styles.closed : ''}`}>
         <div>
