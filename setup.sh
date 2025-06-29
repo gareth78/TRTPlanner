@@ -21,17 +21,17 @@ npm run lint -- --cache || true
 npm run format || true
 
 echo "🧪 Verifying unit test runner availability..."
-npx jest --clearCache > /dev/null 2>&1 || echo "⚠️ Jest not found or not configured."
+if npx --no-install jest --clearCache > /dev/null 2>&1; then
+  echo "✅ Jest is installed and cache cleared."
+else
+  echo "⚠️ Jest not installed or configured. Skipping test setup."
+fi
 
 echo "🚀 Pre-building with Vite for faster hot reloads and test startup..."
-npm run build -- --emptyOutDir > /dev/null 2>&1 || echo "⚠️ Vite build skipped."
+npm run build -- --emptyOutDir > /dev/null 2>&1
 
 echo "🎨 Ensuring react-icons is installed..."
 npm list react-icons > /dev/null 2>&1 || npm install react-icons
-
-# ────────────────────────────────────────────────────────────────────────────────
-# 🔖 VERSION BUMP + CHANGELOG
-# ────────────────────────────────────────────────────────────────────────────────
 
 VERSION_FILE="src/version.ts"
 CHANGELOG_FILE="CHANGELOG.md"
@@ -44,31 +44,33 @@ if [ -f "$VERSION_FILE" ]; then
     MAJOR="${BASH_REMATCH[1]}"
     MINOR="${BASH_REMATCH[2]}"
     PATCH="${BASH_REMATCH[3]}"
-    NEW_PATCH=$(printf "%04d" "$(echo "$PATCH + 1" | bc)")
+    NEW_PATCH=$(printf "%04d" $((10#$PATCH + 1)))
     NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
-
-    sed -i.bak "s/$OLD_VERSION/$NEW_VERSION/" "$VERSION_FILE" && rm "$VERSION_FILE.bak"
+    sed -i.bak "s/$OLD_VERSION/$NEW_VERSION/" "$VERSION_FILE"
+    rm "$VERSION_FILE.bak"
     echo "🔖 Version bumped: $OLD_VERSION → $NEW_VERSION"
 
-    git rev-parse --is-inside-work-tree > /dev/null 2>&1 && {
-      git add "$VERSION_FILE"
-      git commit -m "🔖 Bump version: $OLD_VERSION → $NEW_VERSION" || echo "⚠️ Git commit failed (maybe no changes)."
-    }
+    git add "$VERSION_FILE"
+    git commit -m "🔖 Bump version: $OLD_VERSION → $NEW_VERSION" || echo "⚠️ Git commit failed (maybe no repo or no changes)."
 
     TIMESTAMP=$(date "+%Y-%m-%d %H:%M")
     TASK_ENTRY=${TASK:-"Unspecified task"}
     ENTRY="- $TIMESTAMP · $TASK_ENTRY · v$NEW_VERSION"
 
+    # Write to CHANGELOG.md
+    if ! grep -q "^## Changelog" "$CHANGELOG_FILE"; then
+      echo -e "## Changelog\n" > "$CHANGELOG_FILE"
+    fi
     echo "$ENTRY" >> "$CHANGELOG_FILE"
-    grep -q "^## Changelog" "$CHANGELOG_FILE" || sed -i '1i ## Changelog\n' "$CHANGELOG_FILE"
 
+    # Write to README.md
+    if ! grep -q "^## Changelog" "$README_FILE"; then
+      echo -e "\n## Changelog\n" >> "$README_FILE"
+    fi
     echo "$ENTRY" >> "$README_FILE"
-    grep -q "^## Changelog" "$README_FILE" || echo -e "\n## Changelog\n" >> "$README_FILE"
 
-    git rev-parse --is-inside-work-tree > /dev/null 2>&1 && {
-      git add "$CHANGELOG_FILE" "$README_FILE"
-      git commit -m "📝 Update CHANGELOG and README for v$NEW_VERSION" || echo "⚠️ Changelog commit skipped."
-    }
+    git add "$CHANGELOG_FILE" "$README_FILE"
+    git commit -m "📝 Update CHANGELOG and README for v$NEW_VERSION" || echo "⚠️ Git commit skipped for changelog (no changes)."
   else
     echo "⚠️ Could not parse version from $VERSION_FILE"
   fi
@@ -77,7 +79,6 @@ else
 fi
 
 echo "📊 Summary of files changed:"
-git status --short || echo "(Not a git repo or no changes detected.)"
+git status --short || echo "(not in a git repo or no changes to show)"
 
 echo "✅ Environment setup complete. Ready for Codex execution."
-exit 0
