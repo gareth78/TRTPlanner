@@ -38,3 +38,5 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-29 22:18 · Simplify config layout and add oral medication support · v0.0.0016
 - 2025-06-29 22:34 · Unspecified task · v0.0.0017
 - 2025-06-29 22:46 · Align Injection Schedule layout with General Configuration styling · v0.0.0018
+- 2025-06-29 22:46 · Unspecified task · v0.0.0019
+- 2025-06-29 22:49 · Add Oral Schedule page and conditional sidebar visibility based on enabled medications · v0.0.0020

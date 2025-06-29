@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
+import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/trt_logo.svg';
@@ -8,6 +9,47 @@ import styles from './Sidebar.module.css';
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
+  const [hasInjectables, setHasInjectables] = useState(false);
+  const [hasOrals, setHasOrals] = useState(false);
+
+  const checkMedications = () => {
+    try {
+      const injRaw = localStorage.getItem('injectables');
+      const inj = injRaw ? JSON.parse(injRaw) : [];
+      setHasInjectables(
+        Array.isArray(inj) &&
+          inj.some((i: { disabled?: boolean }) => !i.disabled),
+      );
+    } catch {
+      setHasInjectables(false);
+    }
+
+    try {
+      const oralRaw = localStorage.getItem('orals');
+      const oral = oralRaw ? JSON.parse(oralRaw) : [];
+      setHasOrals(
+        Array.isArray(oral) &&
+          oral.some((o: { disabled?: boolean }) => !o.disabled),
+      );
+    } catch {
+      setHasOrals(false);
+    }
+  };
+
+  useEffect(() => {
+    checkMedications();
+    const handle = (e: StorageEvent) => {
+      if (
+        e.key === 'injectables' ||
+        e.key === 'orals' ||
+        e.key === 'configSettings'
+      ) {
+        checkMedications();
+      }
+    };
+    window.addEventListener('storage', handle);
+    return () => window.removeEventListener('storage', handle);
+  }, []);
 
   const toggle = () => {
     setOpen((o) => !o);
@@ -48,13 +90,24 @@ function Sidebar() {
             >
               <FaHome /> Home
             </NavLink>
-            <NavLink
-              to="/schedule"
-              className={linkClass}
-              onClick={() => setOpen(false)}
-            >
-              <FaSyringe /> Injection Schedule
-            </NavLink>
+            {hasInjectables && (
+              <NavLink
+                to="/schedule"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <FaSyringe /> Injection Schedule
+              </NavLink>
+            )}
+            {hasOrals && (
+              <NavLink
+                to="/oral"
+                className={linkClass}
+                onClick={() => setOpen(false)}
+              >
+                <GiMedicines /> Oral Schedule
+              </NavLink>
+            )}
             <NavLink
               to="/travel"
               className={linkClass}
