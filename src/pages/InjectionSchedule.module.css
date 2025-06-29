@@ -200,3 +200,23 @@
 .deleteButton:hover {
   background: #b91c1c;
 }
+.calendarSection {
+  margin-bottom: 2rem;
+}
+
+.calendar {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.selectedDay {
+  background: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.emptyState {
+  color: #475569;
+  text-align: center;
+}

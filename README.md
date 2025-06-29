@@ -42,3 +42,5 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-29 22:49 · Add Oral Schedule page and conditional sidebar visibility based on enabled medications · v0.0.0020
 - 2025-06-29 22:56 · Unspecified task · v0.0.0021
 - 2025-06-29 22:59 · Conditionally display schedule pages in sidebar based on enabled medication entries · v0.0.0022
+- 2025-06-29 23:34 · Unspecified task · v0.0.0023
+- 2025-06-29 23:37 · Display a calendar for each enabled injectable medication · v0.0.0024
