@@ -81,9 +81,10 @@
 }
 
 .version {
-  font-size: 0.8rem;
-  color: #777;
+  font-size: 1rem;
+  color: #e2e8f0;
   text-align: center;
+  margin-top: 1rem;
 }
 
 .toggleButton {
