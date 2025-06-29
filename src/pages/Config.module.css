@@ -47,3 +47,38 @@
   background-position: right 0.75rem center;
   background-size: 1rem;
 }
+
+.pageTitle {
+  display: flex;
+  align-items: center;
+  margin-left: calc(56px + 1rem + 12px);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.saveButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #1e293b;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.saveButton:hover {
+  background: #334155;
+}
+
+.savedMessage {
+  margin-top: 0.75rem;
+  color: #16a34a;
+  font-weight: 500;
+  text-align: center;
+}
