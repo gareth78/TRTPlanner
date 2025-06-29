@@ -44,9 +44,14 @@ function Config() {
   };
 
   const deleteInjectable = (index: number) => {
-    const updated = [...injectables];
-    updated.splice(index, 1);
-    setInjectables(updated);
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to delete this entry?')) {
+      setInjectables((prev) => {
+        const updated = [...prev];
+        updated.splice(index, 1);
+        return updated;
+      });
+    }
   };
 
   const handleDragStart = (index: number) => {
@@ -194,9 +199,11 @@ function Config() {
                     type="button"
                     className={styles.iconButton}
                     onClick={() => toggleDisable(idx)}
-                    aria-label={inj.disabled ? 'Enable injectable' : 'Disable injectable'}
+                    aria-label={
+                      inj.disabled ? 'Enable injectable' : 'Disable injectable'
+                    }
                   >
-                    <GiSightDisabled />
+                    <GiSightDisabled size={20} />
                   </button>
                   <button
                     type="button"
@@ -204,7 +211,7 @@ function Config() {
                     onClick={() => deleteInjectable(idx)}
                     aria-label="Delete injectable"
                   >
-                    <FaRegTrashAlt />
+                    <FaRegTrashAlt size={20} />
                   </button>
                 </div>
               </div>
