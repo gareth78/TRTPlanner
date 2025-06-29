@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
 import styles from './Config.module.css';
 
+interface Injectable {
+  name: string;
+  disabled?: boolean;
+}
+
 function Config() {
   const [name, setName] = useState('');
   const [trt, setTrt] = useState('');
   const [hcg, setHcg] = useState('');
   const [injectablesEnabled, setInjectablesEnabled] = useState('');
-  const [injectables, setInjectables] = useState<{ name: string }[]>([]);
+  const [injectables, setInjectables] = useState<Injectable[]>([]);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
 
   const handleInjectablesEnabledChange = (value: string) => {
     setInjectablesEnabled(value);
     if (value === 'Yes' && injectables.length === 0) {
-      setInjectables([{ name: '' }]);
+      setInjectables([{ name: '', disabled: false }]);
     }
     if (value !== 'Yes') {
       setInjectables([]);
@@ -20,7 +26,38 @@ function Config() {
   };
 
   const addInjectable = () => {
-    setInjectables([...injectables, { name: '' }]);
+    setInjectables([...injectables, { name: '', disabled: false }]);
+  };
+
+  const handleNameChange = (index: number, value: string) => {
+    const updated = [...injectables];
+    updated[index].name = value;
+    setInjectables(updated);
+  };
+
+  const toggleDisable = (index: number) => {
+    const updated = [...injectables];
+    updated[index].disabled = !updated[index].disabled;
+    setInjectables(updated);
+  };
+
+  const deleteInjectable = (index: number) => {
+    const updated = [...injectables];
+    updated.splice(index, 1);
+    setInjectables(updated);
+  };
+
+  const handleDragStart = (index: number) => {
+    setDragIndex(index);
+  };
+
+  const handleDrop = (index: number) => {
+    if (dragIndex === null || dragIndex === index) return;
+    const updated = [...injectables];
+    const [moved] = updated.splice(dragIndex, 1);
+    updated.splice(index, 0, moved);
+    setInjectables(updated);
+    setDragIndex(null);
   };
 
   useEffect(() => {
@@ -32,7 +69,16 @@ function Config() {
         setTrt(parsed.trt ?? '');
         setHcg(parsed.hcg ?? '');
         setInjectablesEnabled(parsed.injectablesEnabled ?? '');
-        setInjectables(parsed.injectables ?? []);
+        if (Array.isArray(parsed.injectables)) {
+          setInjectables(
+            parsed.injectables.map((i: Injectable) => ({
+              name: i.name ?? '',
+              disabled: i.disabled ?? false,
+            })),
+          );
+        } else {
+          setInjectables([]);
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error('Failed to parse settings', e);
@@ -119,22 +165,44 @@ function Config() {
         {injectablesEnabled === 'Yes' && (
           <>
             {injectables.map((inj, idx) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div className={styles.formGroup} key={idx}>
+              <div
+                key={idx} // eslint-disable-line react/no-array-index-key
+                className={styles.injectableRow}
+                draggable={injectables.length > 1}
+                onDragStart={() => handleDragStart(idx)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => handleDrop(idx)}
+              >
+                {injectables.length > 1 && (
+                  <span className={styles.dragHandle}>⠿</span>
+                )}
                 <label htmlFor={`inj-${idx}`} className={styles.label}>
-                  {`${idx + 1}. Name`}
+                  <span>{`${idx + 1}.`}</span>
                   <input
                     id={`inj-${idx}`}
                     type="text"
-                    className={styles.input}
+                    className={`${styles.input} ${
+                      inj.disabled ? styles.disabledInput : ''
+                    }`}
                     value={inj.name}
-                    onChange={(e) => {
-                      const updated = [...injectables];
-                      updated[idx].name = e.target.value;
-                      setInjectables(updated);
-                    }}
+                    disabled={inj.disabled}
+                    onChange={(e) => handleNameChange(idx, e.target.value)}
                   />
                 </label>
+                <button
+                  type="button"
+                  className={styles.smallButton}
+                  onClick={() => toggleDisable(idx)}
+                >
+                  {inj.disabled ? 'Enable' : 'Disable'}
+                </button>
+                <button
+                  type="button"
+                  className={styles.smallButton}
+                  onClick={() => deleteInjectable(idx)}
+                >
+                  Delete
+                </button>
               </div>
             ))}
             <button
