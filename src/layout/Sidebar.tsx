@@ -14,24 +14,23 @@ function Sidebar() {
 
   const checkMedications = () => {
     try {
-      const injRaw = localStorage.getItem('injectables');
-      const inj = injRaw ? JSON.parse(injRaw) : [];
+      const cfgRaw = localStorage.getItem('configSettings');
+      const cfg = cfgRaw ? JSON.parse(cfgRaw) : {};
+      const inj = Array.isArray(cfg.injectables)
+        ? cfg.injectables
+        : JSON.parse(localStorage.getItem('injectables') || '[]');
+      const oral = Array.isArray(cfg.orals)
+        ? cfg.orals
+        : JSON.parse(localStorage.getItem('orals') || '[]');
+
       setHasInjectables(
-        Array.isArray(inj) &&
-          inj.some((i: { disabled?: boolean }) => !i.disabled),
+        Array.isArray(inj) && inj.some((i: { disabled?: boolean }) => !i.disabled),
+      );
+      setHasOrals(
+        Array.isArray(oral) && oral.some((o: { disabled?: boolean }) => !o.disabled),
       );
     } catch {
       setHasInjectables(false);
-    }
-
-    try {
-      const oralRaw = localStorage.getItem('orals');
-      const oral = oralRaw ? JSON.parse(oralRaw) : [];
-      setHasOrals(
-        Array.isArray(oral) &&
-          oral.some((o: { disabled?: boolean }) => !o.disabled),
-      );
-    } catch {
       setHasOrals(false);
     }
   };
@@ -49,9 +48,10 @@ function Sidebar() {
     };
     window.addEventListener('storage', handle);
     return () => window.removeEventListener('storage', handle);
-  }, []);
+  }, [open]);
 
   const toggle = () => {
+    checkMedications();
     setOpen((o) => !o);
   };
 
