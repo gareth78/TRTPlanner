@@ -6,3 +6,5 @@
 - 2025-06-29 21:09 · Unspecified task · v0.0.0008
 - 2025-06-29 21:26 · Unspecified task · v0.0.0009
 - 2025-06-29 21:26 · Improve layout and UI for dynamic injectable list on Config page · v0.0.0010
+- 2025-06-29 21:47 · Unspecified task · v0.0.0011
+- 2025-06-29 22:03 · Improve layout and UI for dynamic injectable list on Config page · v0.0.0012
