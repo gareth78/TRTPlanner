@@ -44,9 +44,6 @@ module.exports = {
         ignorePropertyModificationsFor: ['state'],
       },
     ],
-    'react/jsx-filename-extension': [
-      'error',
-      { extensions: ['.tsx'] },
-    ],
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
   },
 };
