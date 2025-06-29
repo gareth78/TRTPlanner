@@ -27,11 +27,17 @@ function Sidebar() {
       <aside className={`${styles.sidebar} ${!open ? styles.closed : ''}`}>
         <div>
           <div className={styles.logoContainer}>
-            <img src={logo} alt="logo" className={styles.logo} />
-            <h2>TRT Planner</h2>
+            <div className={styles.logoWrapper}>
+              <img src={logo} alt="logo" className={styles.logo} />
+            </div>
+            <h2 className={styles.title}>TRT Planner</h2>
           </div>
           <nav className={styles.nav}>
-            <NavLink to="/" className={linkClass} onClick={() => setOpen(false)}>
+            <NavLink
+              to="/"
+              className={linkClass}
+              onClick={() => setOpen(false)}
+            >
               <FaHome /> Home
             </NavLink>
             <NavLink

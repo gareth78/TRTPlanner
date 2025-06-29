@@ -1,0 +1,31 @@
+.home {
+  min-height: 100vh;
+  background:
+    url('../assets/bg_pattern.svg') repeat,
+    radial-gradient(circle at top, #ffffff, #f1f5f9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  color: #1e293b;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
