@@ -170,3 +170,26 @@
   color: #64748b;
   font-size: 1rem;
 }
+
+.deleteSection {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.deleteButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.deleteButton:hover {
+  background: #b91c1c;
+}

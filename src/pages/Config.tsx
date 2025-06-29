@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
-import { FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
 import styles from './Config.module.css';
 
 interface Injectable {
@@ -105,6 +105,26 @@ function Config() {
     localStorage.setItem('configSettings', JSON.stringify(data));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleDeleteAll = () => {
+    // eslint-disable-next-line no-alert
+    if (
+      window.confirm(
+        'This will permanently delete all saved configuration and injectable data. Are you sure you want to continue?',
+      )
+    ) {
+      localStorage.removeItem('configSettings');
+      localStorage.removeItem('injectables');
+      localStorage.removeItem('persist:root');
+      setName('');
+      setTrt('');
+      setHcg('');
+      setInjectablesEnabled('');
+      setInjectables([]);
+      // eslint-disable-next-line no-alert
+      window.alert('All data deleted.');
+    }
   };
 
   return (
@@ -229,6 +249,19 @@ function Config() {
           Save
         </button>
         {saved && <div className={styles.savedMessage}>Settings saved!</div>}
+        <div className={styles.deleteSection}>
+          <button
+            type="button"
+            className={styles.deleteButton}
+            onClick={handleDeleteAll}
+          >
+            <FaExclamationTriangle
+              size={20}
+              style={{ marginRight: '0.5rem' }}
+            />
+            Delete All
+          </button>
+        </div>
       </form>
     </>
   );
