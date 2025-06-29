@@ -3,44 +3,50 @@ import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
 import styles from './Config.module.css';
 
-interface Injectable {
+interface Medication {
   name: string;
   disabled?: boolean;
 }
 
 function Config() {
   const [name, setName] = useState('');
-  const [trt, setTrt] = useState('');
-  const [hcg, setHcg] = useState('');
-  const [injectablesEnabled, setInjectablesEnabled] = useState('');
-  const [injectables, setInjectables] = useState<Injectable[]>([]);
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [injectables, setInjectables] = useState<Medication[]>([]);
+  const [orals, setOrals] = useState<Medication[]>([]);
+  const [injDragIndex, setInjDragIndex] = useState<number | null>(null);
+  const [oralDragIndex, setOralDragIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
 
-  const handleInjectablesEnabledChange = (value: string) => {
-    setInjectablesEnabled(value);
-    if (value === 'Yes' && injectables.length === 0) {
-      setInjectables([{ name: '', disabled: false }]);
-    }
-    if (value !== 'Yes') {
-      setInjectables([]);
-    }
-  };
 
   const addInjectable = () => {
     setInjectables([...injectables, { name: '', disabled: false }]);
   };
 
-  const handleNameChange = (index: number, value: string) => {
+  const addOral = () => {
+    setOrals([...orals, { name: '', disabled: false }]);
+  };
+
+  const handleInjectableNameChange = (index: number, value: string) => {
     const updated = [...injectables];
     updated[index].name = value;
     setInjectables(updated);
   };
 
-  const toggleDisable = (index: number) => {
+  const handleOralNameChange = (index: number, value: string) => {
+    const updated = [...orals];
+    updated[index].name = value;
+    setOrals(updated);
+  };
+
+  const toggleInjectableDisable = (index: number) => {
     const updated = [...injectables];
     updated[index].disabled = !updated[index].disabled;
     setInjectables(updated);
+  };
+
+  const toggleOralDisable = (index: number) => {
+    const updated = [...orals];
+    updated[index].disabled = !updated[index].disabled;
+    setOrals(updated);
   };
 
   const deleteInjectable = (index: number) => {
@@ -54,17 +60,41 @@ function Config() {
     }
   };
 
-  const handleDragStart = (index: number) => {
-    setDragIndex(index);
+  const deleteOral = (index: number) => {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to delete this entry?')) {
+      setOrals((prev) => {
+        const updated = [...prev];
+        updated.splice(index, 1);
+        return updated;
+      });
+    }
   };
 
-  const handleDrop = (index: number) => {
-    if (dragIndex === null || dragIndex === index) return;
+  const handleInjectableDragStart = (index: number) => {
+    setInjDragIndex(index);
+  };
+
+  const handleInjectableDrop = (index: number) => {
+    if (injDragIndex === null || injDragIndex === index) return;
     const updated = [...injectables];
-    const [moved] = updated.splice(dragIndex, 1);
+    const [moved] = updated.splice(injDragIndex, 1);
     updated.splice(index, 0, moved);
     setInjectables(updated);
-    setDragIndex(null);
+    setInjDragIndex(null);
+  };
+
+  const handleOralDragStart = (index: number) => {
+    setOralDragIndex(index);
+  };
+
+  const handleOralDrop = (index: number) => {
+    if (oralDragIndex === null || oralDragIndex === index) return;
+    const updated = [...orals];
+    const [moved] = updated.splice(oralDragIndex, 1);
+    updated.splice(index, 0, moved);
+    setOrals(updated);
+    setOralDragIndex(null);
   };
 
   useEffect(() => {
@@ -73,18 +103,25 @@ function Config() {
       try {
         const parsed = JSON.parse(stored);
         setName(parsed.name ?? '');
-        setTrt(parsed.trt ?? '');
-        setHcg(parsed.hcg ?? '');
-        setInjectablesEnabled(parsed.injectablesEnabled ?? '');
         if (Array.isArray(parsed.injectables)) {
           setInjectables(
-            parsed.injectables.map((i: Injectable) => ({
+            parsed.injectables.map((i: Medication) => ({
               name: i.name ?? '',
               disabled: i.disabled ?? false,
             })),
           );
         } else {
           setInjectables([]);
+        }
+        if (Array.isArray(parsed.orals)) {
+          setOrals(
+            parsed.orals.map((o: Medication) => ({
+              name: o.name ?? '',
+              disabled: o.disabled ?? false,
+            })),
+          );
+        } else {
+          setOrals([]);
         }
       } catch (e) {
         // eslint-disable-next-line no-console
@@ -97,10 +134,8 @@ function Config() {
     e.preventDefault();
     const data = {
       name,
-      trt,
-      hcg,
-      injectablesEnabled,
       injectables,
+      orals,
     };
     localStorage.setItem('configSettings', JSON.stringify(data));
     setSaved(true);
@@ -116,12 +151,11 @@ function Config() {
     ) {
       localStorage.removeItem('configSettings');
       localStorage.removeItem('injectables');
+      localStorage.removeItem('orals');
       localStorage.removeItem('persist:root');
       setName('');
-      setTrt('');
-      setHcg('');
-      setInjectablesEnabled('');
       setInjectables([]);
+      setOrals([]);
       // eslint-disable-next-line no-alert
       window.alert('All data deleted.');
     }
@@ -144,107 +178,101 @@ function Config() {
             />
           </label>
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="trt" className={styles.label}>
-            Are you currently on TRT?
-            <select
-              id="trt"
-              className={styles.select}
-              value={trt}
-              onChange={(e) => setTrt(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="hcg" className={styles.label}>
-            Are you currently on HCG?
-            <select
-              id="hcg"
-              className={styles.select}
-              value={hcg}
-              onChange={(e) => setHcg(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="injectablesEnabled" className={styles.label}>
-            Are you taking any of the peptides or injectables you wish recorded?
-            <select
-              id="injectablesEnabled"
-              className={styles.select}
-              value={injectablesEnabled}
-              onChange={(e) => handleInjectablesEnabledChange(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
-        </div>
-        {injectablesEnabled === 'Yes' && (
-          <>
-            {injectables.map((inj, idx) => (
-              <div
-                key={idx} // eslint-disable-line react/no-array-index-key
-                className={styles.injectableRow}
-                draggable={injectables.length > 1}
-                onDragStart={() => handleDragStart(idx)}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={() => handleDrop(idx)}
+        <h2 className={styles.sectionTitle}>Injectable Medication</h2>
+        {injectables.map((inj, idx) => (
+          <div
+            key={idx} // eslint-disable-line react/no-array-index-key
+            className={styles.injectableRow}
+            draggable={injectables.length > 1}
+            onDragStart={() => handleInjectableDragStart(idx)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleInjectableDrop(idx)}
+          >
+            {injectables.length > 1 && (
+              <span className={styles.dragHandle}>⠿</span>
+            )}
+            <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
+            <input
+              id={`inj-${idx}`}
+              type="text"
+              className={`${styles.input} ${styles.injectableInput} ${
+                inj.disabled ? styles.disabledInput : ''
+              }`}
+              value={inj.name}
+              disabled={inj.disabled}
+              onChange={(e) => handleInjectableNameChange(idx, e.target.value)}
+            />
+            <div className={styles.injectableActions}>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => toggleInjectableDisable(idx)}
+                aria-label={
+                  inj.disabled ? 'Enable injectable' : 'Disable injectable'
+                }
               >
-                {injectables.length > 1 && (
-                  <span className={styles.dragHandle}>⠿</span>
-                )}
-                <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
-                <input
-                  id={`inj-${idx}`}
-                  type="text"
-                  className={`${styles.input} ${styles.injectableInput} ${
-                    inj.disabled ? styles.disabledInput : ''
-                  }`}
-                  value={inj.name}
-                  disabled={inj.disabled}
-                  onChange={(e) => handleNameChange(idx, e.target.value)}
-                />
-                <div className={styles.injectableActions}>
-                  <button
-                    type="button"
-                    className={styles.iconButton}
-                    onClick={() => toggleDisable(idx)}
-                    aria-label={
-                      inj.disabled ? 'Enable injectable' : 'Disable injectable'
-                    }
-                  >
-                    <GiSightDisabled size={20} />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.iconButton}
-                    onClick={() => deleteInjectable(idx)}
-                    aria-label="Delete injectable"
-                  >
-                    <FaRegTrashAlt size={20} />
-                  </button>
-                </div>
-              </div>
-            ))}
-            <button
-              type="button"
-              className={styles.addButton}
-              onClick={addInjectable}
-            >
-              Add another
-            </button>
-          </>
-        )}
+                <GiSightDisabled size={20} />
+              </button>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => deleteInjectable(idx)}
+                aria-label="Delete injectable"
+              >
+                <FaRegTrashAlt size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+        <button type="button" className={styles.addButton} onClick={addInjectable}>
+          Add another
+        </button>
+
+        <h2 className={styles.sectionTitle}>Oral Medication</h2>
+        {orals.map((oral, idx) => (
+          <div
+            key={idx} // eslint-disable-line react/no-array-index-key
+            className={styles.injectableRow}
+            draggable={orals.length > 1}
+            onDragStart={() => handleOralDragStart(idx)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleOralDrop(idx)}
+          >
+            {orals.length > 1 && <span className={styles.dragHandle}>⠿</span>}
+            <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
+            <input
+              id={`oral-${idx}`}
+              type="text"
+              className={`${styles.input} ${styles.injectableInput} ${
+                oral.disabled ? styles.disabledInput : ''
+              }`}
+              value={oral.name}
+              disabled={oral.disabled}
+              onChange={(e) => handleOralNameChange(idx, e.target.value)}
+            />
+            <div className={styles.injectableActions}>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => toggleOralDisable(idx)}
+                aria-label={oral.disabled ? 'Enable oral' : 'Disable oral'}
+              >
+                <GiSightDisabled size={20} />
+              </button>
+              <button
+                type="button"
+                className={styles.iconButton}
+                onClick={() => deleteOral(idx)}
+                aria-label="Delete oral"
+              >
+                <FaRegTrashAlt size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+        <button type="button" className={styles.addButton} onClick={addOral}>
+          Add another
+        </button>
         <button type="submit" className={styles.saveButton}>
           Save
         </button>
