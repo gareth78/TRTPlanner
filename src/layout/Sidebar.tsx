@@ -67,7 +67,7 @@ function Sidebar() {
               className={linkClass}
               onClick={() => setOpen(false)}
             >
-              <FaCog /> Config
+              <FaCog /> Configuration
             </NavLink>
           </nav>
         </div>
