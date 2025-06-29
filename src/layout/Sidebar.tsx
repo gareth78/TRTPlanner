@@ -26,10 +26,11 @@ function Sidebar() {
         {open ? (
           <MdClose
             className={`${styles.icon} ${styles.iconOpen}`}
-            size="1.75rem"
+            size="2rem"
+            color="white"
           />
         ) : (
-          <MdMenu className={styles.icon} size="1.75rem" />
+          <MdMenu className={styles.icon} size="2rem" color="white" />
         )}
       </button>
       <aside className={`${styles.sidebar} ${!open ? styles.closed : ''}`}>
