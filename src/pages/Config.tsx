@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { GiSightDisabled } from 'react-icons/gi';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Config.module.css';
 
 interface Injectable {
@@ -190,17 +192,19 @@ function Config() {
                 <div className={styles.injectableActions}>
                   <button
                     type="button"
-                    className={styles.smallButton}
+                    className={styles.iconButton}
                     onClick={() => toggleDisable(idx)}
+                    aria-label={inj.disabled ? 'Enable injectable' : 'Disable injectable'}
                   >
-                    {inj.disabled ? 'Enable' : 'Disable'}
+                    <GiSightDisabled />
                   </button>
                   <button
                     type="button"
-                    className={styles.smallButton}
+                    className={styles.iconButton}
                     onClick={() => deleteInjectable(idx)}
+                    aria-label="Delete injectable"
                   >
-                    Delete
+                    <FaRegTrashAlt />
                   </button>
                 </div>
               </div>
