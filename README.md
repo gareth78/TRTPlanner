@@ -34,3 +34,5 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-29 22:03 · Improve layout and UI for dynamic injectable list on Config page · v0.0.0012
 - 2025-06-29 22:02 · Unspecified task · v0.0.0013
 - 2025-06-29 22:11 · Add Delete All button with confirmation to clear config and injectable data · v0.0.0014
+- 2025-06-29 22:23 · Unspecified task · v0.0.0015
+- 2025-06-29 22:25 · Align Injection Schedule layout with General Configuration styling · v0.0.0016
