@@ -200,3 +200,65 @@
 .deleteButton:hover {
   background: #b91c1c;
 }
+.medSection {
+  margin-bottom: 2rem;
+}
+
+.calendarNav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.calendarWrapper {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+}
+
+.calendar {
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  min-width: 280px;
+}
+
+.calendarHeader {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dayHeaders,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.dayHeader {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.day {
+  text-align: center;
+  padding: 0.25rem 0;
+}
+
+.today {
+  background: #e2e8f0;
+  border-radius: 0.25rem;
+}
+
+.empty {
+  visibility: hidden;
+}
+
+.emptyState {
+  text-align: center;
+  color: #64748b;
+}

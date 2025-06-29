@@ -1,136 +1,115 @@
 import { useEffect, useState } from 'react';
-import { GiSightDisabled } from 'react-icons/gi';
-import { FaRegTrashAlt } from 'react-icons/fa';
 import styles from './InjectionSchedule.module.css';
 
-interface ScheduleEntry {
-  medication: string;
-  date: string;
+interface Medication {
+  name: string;
   disabled?: boolean;
 }
 
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function Calendar({ monthOffset }: { monthOffset: number }) {
+  const today = new Date();
+  const first = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+  const year = first.getFullYear();
+  const month = first.getMonth();
+  const label = first.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  const startDay = first.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const cells = [];
+  for (let i = 0; i < startDay; i += 1) {
+    cells.push(<div key={`b${i}`} className={styles.empty} />);
+  }
+  for (let d = 1; d <= daysInMonth; d += 1) {
+    const isToday = monthOffset === 0 && d === today.getDate();
+    cells.push(
+      <div key={d} className={`${styles.day} ${isToday ? styles.today : ''}`}>{d}</div>,
+    );
+  }
+  const remaining = (startDay + daysInMonth) % 7;
+  if (remaining !== 0) {
+    for (let i = 0; i < 7 - remaining; i += 1) {
+      cells.push(<div key={`e${i}`} className={styles.empty} />);
+    }
+  }
+
+  return (
+    <div className={styles.calendar}>
+      <div className={styles.calendarHeader}>{label}</div>
+      <div className={styles.dayHeaders}>
+        {days.map((d) => (
+          <div key={d} className={styles.dayHeader}>
+            {d}
+          </div>
+        ))}
+      </div>
+      <div className={styles.grid}>{cells}</div>
+    </div>
+  );
+}
+
+function MedicationSection({ name }: { name: string }) {
+  const [offset, setOffset] = useState(0);
+  return (
+    <section className={styles.medSection}>
+      <h2 className={styles.sectionTitle}>{name}</h2>
+      <div className={styles.calendarNav}>
+        <button type="button" onClick={() => setOffset((o) => o - 1)} className={styles.smallButton}>
+          Previous
+        </button>
+        <button type="button" onClick={() => setOffset((o) => o + 1)} className={styles.smallButton}>
+          Next
+        </button>
+      </div>
+      <div className={styles.calendarWrapper}>
+        <Calendar monthOffset={offset} />
+        <Calendar monthOffset={offset + 1} />
+      </div>
+    </section>
+  );
+}
+
 function InjectionSchedule() {
-  const [entries, setEntries] = useState<ScheduleEntry[]>([]);
-  const [saved, setSaved] = useState(false);
+  const [injectables, setInjectables] = useState<Medication[]>([]);
+
+  const loadInjectables = () => {
+    try {
+      const cfgRaw = localStorage.getItem('configSettings');
+      const cfg = cfgRaw ? JSON.parse(cfgRaw) : {};
+      const inj = Array.isArray(cfg.injectables)
+        ? cfg.injectables
+        : JSON.parse(localStorage.getItem('injectables') || '[]');
+      const enabled = Array.isArray(inj)
+        ? inj.filter((i: Medication) => i.name && !i.disabled)
+        : [];
+      setInjectables(enabled);
+    } catch {
+      setInjectables([]);
+    }
+  };
 
   useEffect(() => {
-    const stored = localStorage.getItem('injectionSchedule');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setEntries(
-            parsed.map((e: ScheduleEntry) => ({
-              medication: e.medication ?? '',
-              date: e.date ?? '',
-              disabled: e.disabled ?? false,
-            })),
-          );
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to parse schedule', err);
+    loadInjectables();
+    const handler = (e: StorageEvent) => {
+      if (e.key === 'configSettings' || e.key === 'injectables') {
+        loadInjectables();
       }
-    }
+    };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
   }, []);
-
-  const handleMedicationChange = (idx: number, value: string) => {
-    const updated = [...entries];
-    updated[idx].medication = value;
-    setEntries(updated);
-  };
-
-  const handleDateChange = (idx: number, value: string) => {
-    const updated = [...entries];
-    updated[idx].date = value;
-    setEntries(updated);
-  };
-
-  const addEntry = () => {
-    setEntries([...entries, { medication: '', date: '', disabled: false }]);
-  };
-
-  const toggleDisable = (idx: number) => {
-    const updated = [...entries];
-    updated[idx].disabled = !updated[idx].disabled;
-    setEntries(updated);
-  };
-
-  const deleteEntry = (idx: number) => {
-    // eslint-disable-next-line no-alert
-    if (window.confirm('Are you sure you want to delete this entry?')) {
-      setEntries((prev) => {
-        const updated = [...prev];
-        updated.splice(idx, 1);
-        return updated;
-      });
-    }
-  };
-
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    localStorage.setItem('injectionSchedule', JSON.stringify(entries));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
 
   return (
     <>
       <h1 className={styles.pageTitle}>Injection Schedule</h1>
-      <form className={styles.container} onSubmit={handleSave}>
-        {entries.map((entry, idx) => (
-          <div
-            key={idx} // eslint-disable-line react/no-array-index-key
-            className={styles.injectableRow}
-          >
-            <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
-            <input
-              type="text"
-              placeholder="Medication"
-              className={`${styles.input} ${styles.injectableInput} ${
-                entry.disabled ? styles.disabledInput : ''
-              }`}
-              value={entry.medication}
-              disabled={entry.disabled}
-              onChange={(e) => handleMedicationChange(idx, e.target.value)}
-            />
-            <input
-              type="date"
-              className={`${styles.input} ${styles.injectableInput} ${
-                entry.disabled ? styles.disabledInput : ''
-              }`}
-              value={entry.date}
-              disabled={entry.disabled}
-              onChange={(e) => handleDateChange(idx, e.target.value)}
-            />
-            <div className={styles.injectableActions}>
-              <button
-                type="button"
-                className={styles.iconButton}
-                onClick={() => toggleDisable(idx)}
-                aria-label={entry.disabled ? 'Enable entry' : 'Disable entry'}
-              >
-                <GiSightDisabled size={20} />
-              </button>
-              <button
-                type="button"
-                className={styles.iconButton}
-                onClick={() => deleteEntry(idx)}
-                aria-label="Delete entry"
-              >
-                <FaRegTrashAlt size={20} />
-              </button>
-            </div>
-          </div>
-        ))}
-        <button type="button" className={styles.addButton} onClick={addEntry}>
-          Add another
-        </button>
-        <button type="submit" className={styles.saveButton}>
-          Save
-        </button>
-        {saved && <div className={styles.savedMessage}>Schedule saved!</div>}
-      </form>
+      <div className={styles.container}>
+        {injectables.length === 0 ? (
+          <p className={styles.emptyState}>No injectable medications enabled.</p>
+        ) : (
+          injectables.map((inj) => <MedicationSection key={inj.name} name={inj.name} />)
+        )}
+      </div>
     </>
   );
 }
