@@ -91,11 +91,11 @@
   position: fixed;
   top: 1rem;
   left: 1rem;
-  width: 40px;
-  height: 40px;
-  border: none;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #ffffff;
   border-radius: 50%;
-  background: #003366;
+  background: #1e293b;
   color: #ffffff;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px;
   cursor: pointer;
@@ -110,10 +110,19 @@
 }
 
 .toggleButton:hover {
-  background: #002244;
+  background: #334155;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px;
   transform: scale(1.05);
 }
 
 .buttonOpen {
   left: 260px;
+}
+
+.icon {
+  transition: transform 0.3s ease;
+}
+
+.iconOpen {
+  transform: rotate(180deg);
 }
