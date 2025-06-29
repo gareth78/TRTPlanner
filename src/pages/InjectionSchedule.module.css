@@ -204,6 +204,14 @@
   margin-bottom: 2rem;
 }
 
+.medicationSection {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 .calendar {
   width: 100%;
   border: 1px solid #e5e7eb;
