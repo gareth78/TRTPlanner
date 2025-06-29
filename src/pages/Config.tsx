@@ -176,33 +176,33 @@ function Config() {
                 {injectables.length > 1 && (
                   <span className={styles.dragHandle}>⠿</span>
                 )}
-                <label htmlFor={`inj-${idx}`} className={styles.label}>
-                  <span>{`${idx + 1}.`}</span>
-                  <input
-                    id={`inj-${idx}`}
-                    type="text"
-                    className={`${styles.input} ${
-                      inj.disabled ? styles.disabledInput : ''
-                    }`}
-                    value={inj.name}
-                    disabled={inj.disabled}
-                    onChange={(e) => handleNameChange(idx, e.target.value)}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className={styles.smallButton}
-                  onClick={() => toggleDisable(idx)}
-                >
-                  {inj.disabled ? 'Enable' : 'Disable'}
-                </button>
-                <button
-                  type="button"
-                  className={styles.smallButton}
-                  onClick={() => deleteInjectable(idx)}
-                >
-                  Delete
-                </button>
+                <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
+                <input
+                  id={`inj-${idx}`}
+                  type="text"
+                  className={`${styles.input} ${styles.injectableInput} ${
+                    inj.disabled ? styles.disabledInput : ''
+                  }`}
+                  value={inj.name}
+                  disabled={inj.disabled}
+                  onChange={(e) => handleNameChange(idx, e.target.value)}
+                />
+                <div className={styles.injectableActions}>
+                  <button
+                    type="button"
+                    className={styles.smallButton}
+                    onClick={() => toggleDisable(idx)}
+                  >
+                    {inj.disabled ? 'Enable' : 'Disable'}
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.smallButton}
+                    onClick={() => deleteInjectable(idx)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
             <button

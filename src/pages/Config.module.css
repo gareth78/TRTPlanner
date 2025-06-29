@@ -105,7 +105,22 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.rowIndex {
+  width: 1.5rem;
+  text-align: right;
+}
+
+.injectableInput {
+  flex: 1;
+}
+
+.injectableActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .disabledInput {
