@@ -72,6 +72,24 @@
   transition: background-color 0.2s ease;
 }
 
+.addButton {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: #e2e8f0;
+  color: #1e293b;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background: #cbd5e1;
+}
+
 .saveButton:hover {
   background: #334155;
 }
