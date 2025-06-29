@@ -200,8 +200,18 @@
 .deleteButton:hover {
   background: #b91c1c;
 }
+
+/* Container for each medication calendar */
+.medicationSection {
+  margin-bottom: 2.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 .calendarSection {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .calendar {
