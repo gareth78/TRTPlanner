@@ -36,3 +36,5 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-29 22:11 · Add Delete All button with confirmation to clear config and injectable data · v0.0.0014
 - 2025-06-29 22:17 · Unspecified task · v0.0.0015
 - 2025-06-29 22:18 · Simplify config layout and add oral medication support · v0.0.0016
+- 2025-06-29 22:34 · Unspecified task · v0.0.0017
+- 2025-06-29 22:46 · Align Injection Schedule layout with General Configuration styling · v0.0.0018
