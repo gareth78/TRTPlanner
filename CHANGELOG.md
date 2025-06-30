@@ -31,3 +31,5 @@
 - 2025-06-30 00:40 · Tweak calendar visuals and UX for injection frequency controls · v0.0.0032
 - 2025-06-30 00:57 · Unspecified task · v0.0.0033
 - 2025-06-30 00:58 · Generate full README file describing app purpose, architecture, and usage · v0.0.0034
+- 2025-06-30 01:03 · Unspecified task · v0.0.0035
+- 2025-06-30 01:04 · End of Day 1 milestone · v0.1.0000

@@ -1,9 +1,11 @@
 # TRT Planner
 
 ## Overview
+
 TRT Planner is a self‑hosted medical tracking app built with **React** and **TypeScript** using Vite. It stores all data locally in the browser and requires no backend services. The app lets you configure medications and plan upcoming doses through interactive calendars.
 
 ## Tech Stack
+
 - React 19 + TypeScript
 - Vite for build and dev server
 - Redux Toolkit with redux‑persist
@@ -11,7 +13,9 @@ TRT Planner is a self‑hosted medical tracking app built with **React** and **T
 - react‑icons for UI icons
 
 ## Features
+
 ### Configuration
+
 - Add injectable or oral medications
 - Reorder, disable or delete entries
 - All settings are saved to `localStorage`
@@ -19,17 +23,20 @@ TRT Planner is a self‑hosted medical tracking app built with **React** and **T
 - Future: info buttons will show medication summaries
 
 ### Injection Schedule
+
 - Dynamic calendar per enabled injectable
 - Frequency options: every day, every other day (start today or tomorrow), or specific days of the week
 - Apply or reset schedule settings per medication
 - Responsive: two months on desktop, one month on mobile
 
 ### Oral Schedule
+
 - Simple list of medications with target date
 - Entries can be disabled or deleted
 - Saved to `localStorage` just like injection schedules
 
 ## Project Structure
+
 ```
 src/
   assets/      # images and icons
@@ -42,11 +49,15 @@ src/
 ```
 
 ## Dev Setup
+
 Run the setup script once:
+
 ```bash
 npm run setup
 ```
+
 After that the usual Vite scripts are available:
+
 ```bash
 npm run dev       # start dev server
 npm run build     # production build
@@ -56,15 +67,19 @@ npm run format    # run Prettier
 ```
 
 ## Versioning & Changelog
+
 The current version is tracked in `src/version.ts`. Each commit bumps the patch number and appends an entry to both **CHANGELOG.md** and **README.md**.
 
 ## Privacy
+
 TRT Planner does not send data anywhere. All configuration and schedules are stored in the browser via `localStorage`.
 
 ## Author
+
 The TRT Planner team
 
 ## Changelog
+
 - 2025-06-29 20:11 · Unspecified task · v0.0.0004
 - 2025-06-29 20:14 · Extend Config page to record injectables · v0.0.0005
 - 2025-06-29 20:54 · Unspecified task · v0.0.0006
@@ -95,3 +110,5 @@ The TRT Planner team
 - 2025-06-30 00:40 · Tweak calendar visuals and UX for injection frequency controls · v0.0.0032
 - 2025-06-30 00:57 · Unspecified task · v0.0.0033
 - 2025-06-30 00:58 · Generate full README file describing app purpose, architecture, and usage · v0.0.0034
+- 2025-06-30 01:03 · Unspecified task · v0.0.0035
+- 2025-06-30 01:04 · End of Day 1 milestone · v0.1.0000
