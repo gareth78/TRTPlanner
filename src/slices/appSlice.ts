@@ -6,7 +6,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
-  message: 'Welcome to TRT Planner',
+  message: 'Welcome to MediTrack',
 };
 
 const appSlice = createSlice({

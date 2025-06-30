@@ -1,8 +1,8 @@
-# TRT Planner
+# MediTrack
 
 ## Overview
 
-TRT Planner is a self‑hosted medical tracking app built with **React** and **TypeScript** using Vite. It stores all data locally in the browser and requires no backend services. The app lets you configure medications and plan upcoming doses through interactive calendars.
+MediTrack is a self‑hosted medical tracking app built with **React** and **TypeScript** using Vite. It stores all data locally in the browser and requires no backend services. The app lets you configure medications and plan upcoming doses through interactive calendars.
 
 ## Tech Stack
 
@@ -72,11 +72,11 @@ The current version is tracked in `src/version.ts`. Each commit bumps the patch 
 
 ## Privacy
 
-TRT Planner does not send data anywhere. All configuration and schedules are stored in the browser via `localStorage`.
+MediTrack does not send data anywhere. All configuration and schedules are stored in the browser via `localStorage`.
 
 ## Author
 
-The TRT Planner team
+The MediTrack team
 
 ## Changelog
 
@@ -116,3 +116,5 @@ The TRT Planner team
 - 2025-06-30 14:48 · Refactor injection schedule view to use horizontal drug tab navigation · v0.1.0002
 - 2025-06-30 19:35 · Unspecified task · v0.1.0003
 - 2025-06-30 19:39 · Fix broken import and DOM event listener error to restore live preview rendering · v0.1.0004
+- 2025-06-30 19:50 · Unspecified task · v0.1.0005
+- 2025-06-30 19:52 · Rename application from TRT Planner to MediTrack · v0.1.0006
