@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import styles from './OralSchedule.module.css';
+import { useUser } from '../UserContext';
+import { loadSchedule, saveSchedule } from '../firebase';
 
 interface ScheduleEntry {
   medication: string;
@@ -12,27 +14,44 @@ interface ScheduleEntry {
 function OralSchedule() {
   const [entries, setEntries] = useState<ScheduleEntry[]>([]);
   const [saved, setSaved] = useState(false);
+  const { uid } = useUser();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('oralSchedule');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setEntries(
-            parsed.map((e: ScheduleEntry) => ({
-              medication: e.medication ?? '',
-              date: e.date ?? '',
-              disabled: e.disabled ?? false,
-            })),
-          );
+    const load = async () => {
+      const stored = localStorage.getItem('oralSchedule');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            setEntries(
+              parsed.map((e: ScheduleEntry) => ({
+                medication: e.medication ?? '',
+                date: e.date ?? '',
+                disabled: e.disabled ?? false,
+              })),
+            );
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to parse schedule', err);
         }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to parse schedule', err);
       }
-    }
-  }, []);
+      if (uid) {
+        try {
+          const data = await loadSchedule(uid, 'oralSchedule');
+          if (data && Array.isArray((data as { entries: ScheduleEntry[] }).entries)) {
+            setEntries((data as { entries: ScheduleEntry[] }).entries);
+          }
+        } catch (err) {
+          console.error('Failed to load oral schedule', err);
+        }
+      }
+      setLoading(false);
+    };
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid]);
 
   const handleMedicationChange = (idx: number, value: string) => {
     const updated = [...entries];
@@ -67,9 +86,17 @@ function OralSchedule() {
     }
   };
 
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorage.setItem('oralSchedule', JSON.stringify(entries));
+    if (uid) {
+      try {
+        await saveSchedule(uid, 'oralSchedule', { entries });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to save oral schedule', err);
+      }
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -77,6 +104,9 @@ function OralSchedule() {
   return (
     <>
       <h1 className={styles.pageTitle}>Oral Schedule</h1>
+      {loading ? (
+        <p className={styles.savedMessage}>Loading schedule...</p>
+      ) : (
       <form className={styles.container} onSubmit={handleSave}>
         {entries.map((entry, idx) => (
           <div
@@ -131,6 +161,7 @@ function OralSchedule() {
         </button>
         {saved && <div className={styles.savedMessage}>Schedule saved!</div>}
       </form>
+      )}
     </>
   );
 }
