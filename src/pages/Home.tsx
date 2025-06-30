@@ -1,4 +1,4 @@
-import logo from '../assets/trt_logo.svg';
+import logo from '../assets/meditrack-logo-horizontal.png';
 import styles from './Home.module.css';
 
 function Home() {
