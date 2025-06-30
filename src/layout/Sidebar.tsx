@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
@@ -6,11 +6,14 @@ import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/meditrack-logo-horizontal.png';
 import styles from './Sidebar.module.css';
+import useOutsideClick from '../hooks/useOutsideClick';
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
   const [hasInjectables, setHasInjectables] = useState(false);
   const [hasOrals, setHasOrals] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const checkMedications = () => {
     try {
@@ -60,11 +63,14 @@ function Sidebar() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `${styles.link} ${isActive ? styles.active : ''}`;
 
+  useOutsideClick(open, sidebarRef, buttonRef, () => setOpen(false));
+
   return (
     <>
       <button
         type="button"
         onClick={toggle}
+        ref={buttonRef}
         className={`${styles.toggleButton} ${open ? styles.buttonOpen : ''}`}
       >
         {open ? (
@@ -76,7 +82,10 @@ function Sidebar() {
           <MdMenu className={styles.icon} color="white" />
         )}
       </button>
-      <aside className={`${styles.sidebar} ${!open ? styles.closed : ''}`}>
+      <aside
+        ref={sidebarRef}
+        className={`${styles.sidebar} ${!open ? styles.closed : ''}`}
+      >
         <div>
           <div className={styles.logoContainer}>
             <img src={logo} alt="MediTrack logo" className={styles.logo} />

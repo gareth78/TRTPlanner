@@ -120,3 +120,5 @@ The MediTrack team
 - 2025-06-30 19:52 · Rename application from TRT Planner to MediTrack · v0.1.0006
 - 2025-06-30 20:19 · Unspecified task · v0.1.0007
 - 2025-06-30 20:24 · Rebrand app with MediTrack logo and updated light theme · v0.1.0008
+- 2025-06-30 20:37 · Unspecified task · v0.1.0009
+- 2025-06-30 20:39 · Improve MediTrack sidebar styling and add click-outside close behavior · v0.1.0010
