@@ -132,3 +132,5 @@ The MediTrack team
 
 - 2025-06-30 23:34 · Fix null element error in share-modal.js using safe event listener attachment · v0.1.0017
 - 2025-06-30 23:41 · Unspecified task · v0.1.0018
+- 2025-06-30 23:49 · Unspecified task · v0.1.0019
+- 2025-06-30 23:56 · Migrate share-modal.js logic into React useEffect to prevent null DOM access crash · v0.1.0020
