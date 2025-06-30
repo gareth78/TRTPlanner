@@ -37,3 +37,5 @@
 - 2025-06-30 14:48 · Refactor injection schedule view to use horizontal drug tab navigation · v0.1.0002
 - 2025-06-30 19:35 · Unspecified task · v0.1.0003
 - 2025-06-30 19:39 · Fix broken import and DOM event listener error to restore live preview rendering · v0.1.0004
+- 2025-06-30 19:50 · Unspecified task · v0.1.0005
+- 2025-06-30 19:52 · Rename application from TRT Planner to MediTrack · v0.1.0006

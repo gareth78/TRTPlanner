@@ -80,7 +80,7 @@ function Sidebar() {
             <div className={styles.logoWrapper}>
               <img src={logo} alt="logo" className={styles.logo} />
             </div>
-            <h2 className={styles.title}>TRT Planner</h2>
+            <h2 className={styles.title}>MediTrack</h2>
           </div>
           <nav className={styles.nav}>
             <NavLink
