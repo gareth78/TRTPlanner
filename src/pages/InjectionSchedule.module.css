@@ -1,9 +1,10 @@
 .container {
-  background: #f9fafb;
+  background: #6a2aff;
   padding: 2rem;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Nunito', 'Inter', sans-serif;
+  color: #f5f5f5;
   max-width: 600px;
 }
 
@@ -16,7 +17,7 @@
 
 .label {
   font-weight: 500;
-  color: #1e293b;
+  color: #f5f5f5;
 }
 
 .input,
@@ -56,21 +57,21 @@
   margin-bottom: 2rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #f5f5f5;
 }
 
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #f5f5f5;
   margin: 1rem 0 0.5rem;
 }
 
 .saveButton {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: #1e293b;
-  color: #ffffff;
+  background: #fd38c0;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -82,8 +83,8 @@
 .addButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -94,11 +95,11 @@
 }
 
 .addButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .saveButton:hover {
-  background: #334155;
+  background: #6a2aff;
 }
 
 .savedMessage {
@@ -138,8 +139,8 @@
 }
 
 .smallButton {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem 0.5rem;
@@ -149,12 +150,12 @@
 }
 
 .smallButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .iconButton {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem;
@@ -169,7 +170,7 @@
 }
 
 .iconButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .dragHandle {
@@ -187,8 +188,8 @@
 .deleteButton {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: #dc2626;
-  color: #ffffff;
+  background: #fd38c0;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -198,7 +199,7 @@
 }
 
 .deleteButton:hover {
-  background: #b91c1c;
+  background: #6a2aff;
 }
 .calendarSection {
   margin-bottom: 2rem;
@@ -207,22 +208,24 @@
 .medicationSection {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: #ffffff;
+  background: #6a2aff;
   border-radius: 0.75rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #f5f5f5;
 }
 
 .calendar {
   width: 100%;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #00e0ff;
   border-radius: 0.5rem;
   padding: 0.5rem;
+  background: #1b005a;
 }
 
 .scheduledDay {
-  background: #ecfdf5 !important;
-  border: 1px solid #6ee7b7 !important;
-  color: #065f46 !important;
+  background: #fd38c022 !important;
+  border: 1px solid #fd38c0 !important;
+  color: #f5f5f5 !important;
   border-radius: 0.375rem;
 }
 
@@ -251,8 +254,8 @@
 }
 
 .applyButton {
-  background: #1e293b;
-  color: #ffffff;
+  background: #fd38c0;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
@@ -261,9 +264,9 @@
 }
 
 .resetButton {
-  background: #f1f5f9;
-  color: #1e293b;
-  border: 1px solid #cbd5e1;
+  background: #00e0ff;
+  color: #1b005a;
+  border: 1px solid #00e0ff;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   font-weight: 500;
