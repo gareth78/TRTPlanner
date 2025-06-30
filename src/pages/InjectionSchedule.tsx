@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react';
-import Calendar from 'react-calendar';
 import useIsMobile from '../hooks/useIsMobile';
 import 'react-calendar/dist/Calendar.css';
+import DrugSchedule, { Frequency, ScheduleConfig } from './DrugSchedule';
 import styles from './InjectionSchedule.module.css';
 
 interface Medication {
   name: string;
   disabled?: boolean;
-}
-
-type Frequency = 'daily' | 'everyOther' | 'specific';
-
-interface ScheduleConfig {
-  frequency: Frequency;
-  anchor?: string; // ISO date string
-  daysOfWeek?: number[];
 }
 
 interface ScheduleMap {
@@ -26,6 +18,7 @@ function InjectionSchedule() {
   const [configs, setConfigs] = useState<ScheduleMap>({});
   const [editing, setEditing] = useState<ScheduleMap>({});
   const isMobile = useIsMobile();
+  const [activeDrug, setActiveDrug] = useState('');
 
   useEffect(() => {
     try {
@@ -42,10 +35,18 @@ function InjectionSchedule() {
       setConfigs(parsed);
       const edit: ScheduleMap = {};
       active.forEach((m) => {
-        edit[m.name] =
-          parsed[m.name] || { frequency: 'daily', daysOfWeek: [], anchor: undefined };
+        edit[m.name] = parsed[m.name] || {
+          frequency: 'daily',
+          daysOfWeek: [],
+          anchor: undefined,
+        };
       });
       setEditing(edit);
+      if (active.length > 0) {
+        setActiveDrug((cur) =>
+          cur && active.some((a) => a.name === cur) ? cur : active[0].name,
+        );
+      }
     } catch {
       setMeds([]);
       setConfigs({});
@@ -107,7 +108,6 @@ function InjectionSchedule() {
     }));
   };
 
-
   const tileClassName =
     (name: string) =>
     ({ date, view }: { date: Date; view: string }) => {
@@ -137,111 +137,42 @@ function InjectionSchedule() {
           No enabled injectable medications found.
         </p>
       ) : (
-        meds.map((m) => (
-          <section
-            key={m.name}
-            className={`${styles.calendarSection} ${styles.medicationSection}`}
-          >
-            <h2 className={styles.sectionTitle}>{m.name}</h2>
-            <div className={styles.configSection}>
-              <label htmlFor={`freq-${m.name}`} className={styles.label}>
-                Frequency
-                <select
-                  id={`freq-${m.name}`}
-                  className={styles.select}
-                  value={editing[m.name]?.frequency}
-                  onChange={(e) =>
-                    handleFreqChange(m.name, e.target.value as Frequency)
-                  }
-                >
-                  <option value="daily">Every day</option>
-                  <option value="everyOther">Every other day</option>
-                  <option value="specific">Specific days of the week</option>
-                </select>
-              </label>
-              {editing[m.name]?.frequency === 'everyOther' && (
-                <div className={styles.startOptions}>
-                  <label htmlFor={`start-${m.name}-today`}>
-                    <input
-                      id={`start-${m.name}-today`}
-                      type="radio"
-                      name={`start-${m.name}`}
-                      checked={(() => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        const anchor = editing[m.name]?.anchor
-                          ? new Date(editing[m.name].anchor)
-                          : today;
-                        anchor.setHours(0, 0, 0, 0);
-                        return anchor.getTime() === today.getTime();
-                      })()}
-                      onChange={() => setStartOption(m.name, 0)}
-                    />
-                    Start today
-                  </label>
-                  <label htmlFor={`start-${m.name}-tomorrow`}>
-                    <input
-                      id={`start-${m.name}-tomorrow`}
-                      type="radio"
-                      name={`start-${m.name}`}
-                      checked={(() => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        const tomorrow = new Date(today);
-                        tomorrow.setDate(tomorrow.getDate() + 1);
-                        const anchor = editing[m.name]?.anchor
-                          ? new Date(editing[m.name].anchor)
-                          : today;
-                        anchor.setHours(0, 0, 0, 0);
-                        return anchor.getTime() === tomorrow.getTime();
-                      })()}
-                      onChange={() => setStartOption(m.name, 1)}
-                    />
-                    Start tomorrow
-                  </label>
-                </div>
-              )}
-              {editing[m.name]?.frequency === 'specific' && (
-                <div className={styles.daysOfWeek}>
-                  {[0, 1, 2, 3, 4, 5, 6].map((d) => (
-                    <div key={d} className={styles.dayToggle}>
-                      <input
-                        id={`day-${m.name}-${d}`}
-                        type="checkbox"
-                        checked={editing[m.name]?.daysOfWeek?.includes(d) || false}
-                        onChange={() => toggleDayOfWeek(m.name, d)}
-                      />
-                      <label htmlFor={`day-${m.name}-${d}`}>{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]}</label>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className={styles.buttonRow}>
-                <button
-                  type="button"
-                  className={styles.applyButton}
-                  onClick={() => applyConfig(m.name)}
-                >
-                  Apply
-                </button>
-                <button
-                  type="button"
-                  className={styles.resetButton}
-                  onClick={() => resetConfig(m.name)}
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-            <Calendar
-              showDoubleView={!isMobile}
-              prev2Label={null}
-              next2Label={null}
-              tileClassName={tileClassName(m.name)}
-              className={styles.calendar}
-            />
-          </section>
-        ))
+        <>
+          <div role="tablist" className="mb-4 flex space-x-4 font-bold text-lg">
+            {meds.map((m) => (
+              <button
+                key={m.name}
+                type="button"
+                role="tab"
+                aria-selected={activeDrug === m.name}
+                className={`focus:outline-none ${
+                  activeDrug === m.name
+                    ? 'border-b-2 border-blue-600'
+                    : 'text-gray-500'
+                }`}
+                onClick={() => setActiveDrug(m.name)}
+              >
+                {m.name}
+              </button>
+            ))}
+          </div>
+          {meds.map((m) =>
+            activeDrug === m.name ? (
+              <DrugSchedule
+                key={m.name}
+                name={m.name}
+                editing={editing[m.name]}
+                isMobile={isMobile}
+                onFreqChange={(f) => handleFreqChange(m.name, f)}
+                onToggleDayOfWeek={(d) => toggleDayOfWeek(m.name, d)}
+                onSetStartOption={(o) => setStartOption(m.name, o)}
+                onApply={() => applyConfig(m.name)}
+                onReset={() => resetConfig(m.name)}
+                tileClassName={tileClassName(m.name)}
+              />
+            ) : null,
+          )}
+        </>
       )}
     </div>
   );
