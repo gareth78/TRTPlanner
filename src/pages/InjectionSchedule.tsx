@@ -54,10 +54,17 @@ function InjectionSchedule() {
   }, []);
 
   const handleFreqChange = (name: string, freq: Frequency) => {
-    setEditing((prev) => ({
-      ...prev,
-      [name]: { ...prev[name], frequency: freq },
-    }));
+    setEditing((prev) => {
+      const today = new Date();
+      const anchor =
+        freq === 'everyOther'
+          ? prev[name].anchor || today.toISOString()
+          : undefined;
+      return {
+        ...prev,
+        [name]: { ...prev[name], frequency: freq, anchor },
+      };
+    });
   };
 
   const toggleDayOfWeek = (name: string, day: number) => {
@@ -68,6 +75,15 @@ function InjectionSchedule() {
         : [...days, day];
       return { ...prev, [name]: { ...prev[name], daysOfWeek: updated } };
     });
+  };
+
+  const setStartOption = (name: string, offset: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    setEditing((prev) => ({
+      ...prev,
+      [name]: { ...prev[name], anchor: date.toISOString() },
+    }));
   };
 
   const applyConfig = (name: string) => {
@@ -91,20 +107,6 @@ function InjectionSchedule() {
     }));
   };
 
-  const handleAnchorSelect = (name: string, date: Date) => {
-    setEditing((prev) => ({
-      ...prev,
-      [name]: { ...prev[name], anchor: date.toISOString() },
-    }));
-    setConfigs((prev) => {
-      const updated = {
-        ...prev,
-        [name]: { ...prev[name], anchor: date.toISOString(), frequency: 'everyOther' },
-      };
-      localStorage.setItem('injectionSchedule', JSON.stringify(updated));
-      return updated;
-    });
-  };
 
   const tileClassName =
     (name: string) =>
@@ -157,6 +159,48 @@ function InjectionSchedule() {
                   <option value="specific">Specific days of the week</option>
                 </select>
               </label>
+              {editing[m.name]?.frequency === 'everyOther' && (
+                <div className={styles.startOptions}>
+                  <label htmlFor={`start-${m.name}-today`}>
+                    <input
+                      id={`start-${m.name}-today`}
+                      type="radio"
+                      name={`start-${m.name}`}
+                      checked={(() => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const anchor = editing[m.name]?.anchor
+                          ? new Date(editing[m.name].anchor)
+                          : today;
+                        anchor.setHours(0, 0, 0, 0);
+                        return anchor.getTime() === today.getTime();
+                      })()}
+                      onChange={() => setStartOption(m.name, 0)}
+                    />
+                    Start today
+                  </label>
+                  <label htmlFor={`start-${m.name}-tomorrow`}>
+                    <input
+                      id={`start-${m.name}-tomorrow`}
+                      type="radio"
+                      name={`start-${m.name}`}
+                      checked={(() => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const tomorrow = new Date(today);
+                        tomorrow.setDate(tomorrow.getDate() + 1);
+                        const anchor = editing[m.name]?.anchor
+                          ? new Date(editing[m.name].anchor)
+                          : today;
+                        anchor.setHours(0, 0, 0, 0);
+                        return anchor.getTime() === tomorrow.getTime();
+                      })()}
+                      onChange={() => setStartOption(m.name, 1)}
+                    />
+                    Start tomorrow
+                  </label>
+                </div>
+              )}
               {editing[m.name]?.frequency === 'specific' && (
                 <div className={styles.daysOfWeek}>
                   {[0, 1, 2, 3, 4, 5, 6].map((d) => (
@@ -193,10 +237,6 @@ function InjectionSchedule() {
               showDoubleView={!isMobile}
               prev2Label={null}
               next2Label={null}
-              onClickDay={(d) =>
-                editing[m.name]?.frequency === 'everyOther' &&
-                handleAnchorSelect(m.name, d)
-              }
               tileClassName={tileClassName(m.name)}
               className={styles.calendar}
             />
