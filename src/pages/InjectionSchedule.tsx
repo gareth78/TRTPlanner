@@ -63,7 +63,7 @@ function InjectionSchedule() {
         </p>
       ) : (
         meds.map((m) => (
-          <section key={m.name} className={styles.calendarSection}>
+          <section key={m.name} className={styles.medicationSection}>
             <h2 className={styles.sectionTitle}>{m.name}</h2>
             <Calendar
               showDoubleView
