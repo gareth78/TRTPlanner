@@ -49,3 +49,5 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-30 00:16 · Unspecified task · v0.0.0027
 
 - 2025-06-30 00:18 · Make calendar view responsive: 2 months on desktop, 1 month on mobile · v0.0.0028
+- 2025-06-30 00:25 · Unspecified task · v0.0.0029
+- 2025-06-30 00:28 · Add configurable injection frequency logic with apply/reset controls for each medication section · v0.0.0030

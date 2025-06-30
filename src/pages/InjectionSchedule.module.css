@@ -219,9 +219,54 @@
   padding: 0.5rem;
 }
 
-.selectedDay {
-  background: #1e293b !important;
-  color: #ffffff !important;
+.scheduledDay {
+  background: #4ade80 !important;
+  border: 1px solid #22c55e !important;
+  color: #1e293b !important;
+}
+
+.configSection {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.daysOfWeek {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dayToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.applyButton {
+  background: #1e293b;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resetButton {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .emptyState {
