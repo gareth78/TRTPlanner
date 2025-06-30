@@ -5,6 +5,7 @@ import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/MediTrack_logo_svg.svg';
+import styles from './Sidebar.module.css';
 import useOutsideClick from '../hooks/useOutsideClick';
 
 function Sidebar() {
@@ -60,11 +61,7 @@ function Sidebar() {
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-2 p-2 rounded-md transition hover:bg-[var(--hover-bg)] hover:pl-3 hover:scale-105 ${
-      isActive
-        ? 'font-bold bg-[var(--accent-secondary)] text-white'
-        : 'text-slate-100'
-    }`;
+    `${styles.link} ${isActive ? styles.active : ''}`;
 
   useOutsideClick(open, sidebarRef, buttonRef, () => setOpen(false));
 
@@ -74,24 +71,26 @@ function Sidebar() {
         type="button"
         onClick={toggle}
         ref={buttonRef}
-        className="fixed top-4 left-4 z-50 w-14 h-14 bg-[var(--accent-primary)] border-2 border-white rounded-full text-white shadow-md flex items-center justify-center transition-all hover:bg-[var(--hover-bg)] hover:shadow-lg"
-        style={{ left: open ? 'calc(min(80vw, 250px) + 1rem)' : undefined }}
+        className={`${styles.toggleButton} ${open ? styles.buttonOpen : ''}`}
       >
         {open ? (
-          <MdClose className="text-3xl transform rotate-180 transition" />
+          <MdClose
+            className={`${styles.icon} ${styles.iconOpen}`}
+            color="white"
+          />
         ) : (
-          <MdMenu className="text-3xl" />
+          <MdMenu className={styles.icon} color="white" />
         )}
       </button>
       <aside
         ref={sidebarRef}
-        className={`fixed top-0 left-0 w-[min(80vw,250px)] h-screen bg-gradient-to-b from-white via-gray-100 to-teal-700 shadow-lg p-4 flex flex-col justify-between rounded-r-lg transform transition-transform duration-300 z-40 ${!open ? '-translate-x-full' : ''}`}
+        className={`${styles.sidebar} ${!open ? styles.closed : ''}`}
       >
         <div>
-          <div className="flex justify-center items-center mb-6 pt-4 pb-2">
-            <img src={logo} alt="MediTrack logo" className="max-w-40 h-auto" />
+          <div className={styles.logoContainer}>
+            <img src={logo} alt="MediTrack logo" className={styles.logo} />
           </div>
-          <nav className="flex flex-col gap-4">
+          <nav className={styles.nav}>
             <NavLink
               to="/"
               className={linkClass}
@@ -133,7 +132,7 @@ function Sidebar() {
             </NavLink>
           </nav>
         </div>
-        <div className="text-center mt-4 text-xs text-white/70">v{version}</div>
+        <div className={styles.version}>v{version}</div>
       </aside>
     </>
   );
