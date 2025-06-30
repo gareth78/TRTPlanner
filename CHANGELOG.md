@@ -39,3 +39,5 @@
 - 2025-06-30 19:39 · Fix broken import and DOM event listener error to restore live preview rendering · v0.1.0004
 - 2025-06-30 19:50 · Unspecified task · v0.1.0005
 - 2025-06-30 19:52 · Rename application from TRT Planner to MediTrack · v0.1.0006
+- 2025-06-30 20:19 · Unspecified task · v0.1.0007
+- 2025-06-30 20:24 · Rebrand app with MediTrack logo and updated light theme · v0.1.0008

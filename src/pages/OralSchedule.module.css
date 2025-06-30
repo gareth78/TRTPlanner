@@ -1,5 +1,5 @@
 .container {
-  background: #f9fafb;
+  background: var(--bg-base);
   padding: 2rem;
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -16,7 +16,7 @@
 
 .label {
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-main);
 }
 
 .input,
@@ -36,7 +36,7 @@
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #64748b;
+  border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.3);
 }
 
@@ -56,20 +56,20 @@
   margin-bottom: 2rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-main);
 }
 
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-main);
   margin: 1rem 0 0.5rem;
 }
 
 .saveButton {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: #1e293b;
+  background: var(--accent-primary);
   color: #ffffff;
   border: none;
   border-radius: 0.5rem;
@@ -83,7 +83,7 @@
   width: 100%;
   padding: 0.5rem 1rem;
   background: #e2e8f0;
-  color: #1e293b;
+  color: var(--text-main);
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -98,7 +98,7 @@
 }
 
 .saveButton:hover {
-  background: #334155;
+  background: var(--hover-bg);
 }
 
 .savedMessage {
@@ -139,7 +139,7 @@
 
 .smallButton {
   background: #e2e8f0;
-  color: #1e293b;
+  color: var(--text-main);
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem 0.5rem;
@@ -154,7 +154,7 @@
 
 .iconButton {
   background: #e2e8f0;
-  color: #1e293b;
+  color: var(--text-main);
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem;
@@ -174,7 +174,7 @@
 
 .dragHandle {
   cursor: move;
-  color: #64748b;
+  color: var(--accent-primary);
   font-size: 1rem;
 }
 

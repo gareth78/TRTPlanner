@@ -4,7 +4,7 @@
   left: 0;
   width: 250px;
   height: 100vh;
-  background: linear-gradient(180deg, #1e293b, #334155);
+  background: linear-gradient(180deg, var(--accent-primary), #059669);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   display: flex;
@@ -29,16 +29,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.logoWrapper {
-  background: #ffffff;
-  padding: 0.5rem;
-  border-radius: 50%;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -46,8 +36,8 @@
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+  width: 160px;
+  height: auto;
 }
 
 .nav {
@@ -69,7 +59,7 @@
 }
 
 .link:hover {
-  background: #64748b;
+  background: var(--hover-bg);
   padding-left: 0.75rem;
   transform: scale(1.05);
 }
@@ -77,7 +67,7 @@
 .active {
   font-weight: 700;
   background: #e2e8f0;
-  color: #1e293b;
+  color: var(--text-main);
 }
 
 .version {
@@ -100,7 +90,7 @@
   height: 56px;
   border: 2px solid #ffffff;
   border-radius: 50%;
-  background: #1e293b;
+  background: var(--accent-primary);
   color: #ffffff;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px;
   cursor: pointer;
@@ -115,7 +105,7 @@
 }
 
 .toggleButton:hover {
-  background: #334155;
+  background: var(--hover-bg);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px;
   transform: scale(1.05);
 }
@@ -134,7 +124,6 @@
   width: 100%;
   height: 100%;
 }
-
 
 .iconOpen {
   transform: rotate(180deg);

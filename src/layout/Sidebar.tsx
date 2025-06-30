@@ -4,7 +4,7 @@ import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
-import logo from '../assets/trt_logo.svg';
+import logo from '../assets/meditrack-logo-horizontal.png';
 import styles from './Sidebar.module.css';
 
 function Sidebar() {
@@ -24,10 +24,12 @@ function Sidebar() {
         : JSON.parse(localStorage.getItem('orals') || '[]');
 
       setHasInjectables(
-        Array.isArray(inj) && inj.some((i: { disabled?: boolean }) => !i.disabled),
+        Array.isArray(inj) &&
+          inj.some((i: { disabled?: boolean }) => !i.disabled),
       );
       setHasOrals(
-        Array.isArray(oral) && oral.some((o: { disabled?: boolean }) => !o.disabled),
+        Array.isArray(oral) &&
+          oral.some((o: { disabled?: boolean }) => !o.disabled),
       );
     } catch {
       setHasInjectables(false);
@@ -77,10 +79,7 @@ function Sidebar() {
       <aside className={`${styles.sidebar} ${!open ? styles.closed : ''}`}>
         <div>
           <div className={styles.logoContainer}>
-            <div className={styles.logoWrapper}>
-              <img src={logo} alt="logo" className={styles.logo} />
-            </div>
-            <h2 className={styles.title}>MediTrack</h2>
+            <img src={logo} alt="MediTrack logo" className={styles.logo} />
           </div>
           <nav className={styles.nav}>
             <NavLink
