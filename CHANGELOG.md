@@ -43,3 +43,5 @@
 - 2025-06-30 20:24 · Rebrand app with MediTrack logo and updated light theme · v0.1.0008
 - 2025-06-30 20:37 · Unspecified task · v0.1.0009
 - 2025-06-30 20:39 · Improve MediTrack sidebar styling and add click-outside close behavior · v0.1.0010
+- 2025-06-30 21:47 · Unspecified task · v0.1.0011
+- 2025-06-30 21:52 · Add Firebase anonymous auth and Firestore-based schedule syncing · v0.1.0012
