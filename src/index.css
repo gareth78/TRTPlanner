@@ -5,8 +5,10 @@
 
   --bg-base: #f7f9fa;
   --text-main: #1f2937;
-  --accent-primary: #10b981;
-  --hover-bg: #d1fae5;
+  /* MediTrack brand colors */
+  --accent-primary: #15b39c;
+  --accent-secondary: #f37ada;
+  --hover-bg: #d0f3ed;
 
   color-scheme: light;
   color: var(--text-main);

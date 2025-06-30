@@ -4,7 +4,7 @@ import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
-import logo from '../assets/meditrack-logo-horizontal.png';
+import logo from '../assets/MediTrack_logo_svg.svg';
 import styles from './Sidebar.module.css';
 import useOutsideClick from '../hooks/useOutsideClick';
 

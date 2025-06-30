@@ -2,13 +2,13 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px;
+  width: min(80vw, 250px);
   height: 100vh;
   background: linear-gradient(
     180deg,
-    #ecfdf5 0%,
-    var(--accent-primary) 40%,
-    #059669 100%
+    #f0fdfa 0%,
+    var(--accent-primary) 60%,
+    #0e766c 100%
   );
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 1rem;
@@ -28,6 +28,7 @@
 .logoContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
@@ -43,7 +44,8 @@
 }
 
 .logo {
-  width: 160px;
+  width: 100%;
+  max-width: 160px;
   height: auto;
 }
 
@@ -73,8 +75,8 @@
 
 .active {
   font-weight: 700;
-  background: #e2e8f0;
-  color: var(--text-main);
+  background: var(--accent-secondary);
+  color: #ffffff;
 }
 
 .version {
@@ -118,7 +120,7 @@
 }
 
 .buttonOpen {
-  left: 260px;
+  left: calc(min(80vw, 250px) + 10px);
 }
 
 .icon {
