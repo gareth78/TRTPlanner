@@ -20,3 +20,5 @@
 - 2025-06-29 22:59 · Conditionally display schedule pages in sidebar based on enabled medication entries · v0.0.0022
 - 2025-06-29 23:34 · Unspecified task · v0.0.0023
 - 2025-06-29 23:37 · Display a calendar for each enabled injectable medication · v0.0.0024
+- 2025-06-29 23:52 · Unspecified task · v0.0.0025
+- 2025-06-29 23:54 · Improve visual separation between medication calendar blocks on Injection Schedule page · v0.0.0026
