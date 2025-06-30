@@ -29,3 +29,5 @@
 - 2025-06-30 00:28 · Add configurable injection frequency logic with apply/reset controls for each medication section · v0.0.0030
 - 2025-06-30 00:39 · Unspecified task · v0.0.0031
 - 2025-06-30 00:40 · Tweak calendar visuals and UX for injection frequency controls · v0.0.0032
+- 2025-06-30 00:57 · Unspecified task · v0.0.0033
+- 2025-06-30 00:58 · Generate full README file describing app purpose, architecture, and usage · v0.0.0034

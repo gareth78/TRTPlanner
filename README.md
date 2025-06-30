@@ -1,17 +1,52 @@
 # TRT Planner
 
-This project is a starter React + TypeScript application using Vite and Redux Toolkit. The Redux state is persisted to `localStorage` via `redux-persist`.
+## Overview
+TRT Planner is a self‑hosted medical tracking app built with **React** and **TypeScript** using Vite. It stores all data locally in the browser and requires no backend services. The app lets you configure medications and plan upcoming doses through interactive calendars.
 
-## Development
+## Tech Stack
+- React 19 + TypeScript
+- Vite for build and dev server
+- Redux Toolkit with redux‑persist
+- react‑router for navigation
+- react‑icons for UI icons
 
-Run the setup script once to install dependencies, lint, format and start the dev server:
+## Features
+### Configuration
+- Add injectable or oral medications
+- Reorder, disable or delete entries
+- All settings are saved to `localStorage`
+- "Delete All" button wipes all saved data with confirmation
+- Future: info buttons will show medication summaries
 
+### Injection Schedule
+- Dynamic calendar per enabled injectable
+- Frequency options: every day, every other day (start today or tomorrow), or specific days of the week
+- Apply or reset schedule settings per medication
+- Responsive: two months on desktop, one month on mobile
+
+### Oral Schedule
+- Simple list of medications with target date
+- Entries can be disabled or deleted
+- Saved to `localStorage` just like injection schedules
+
+## Project Structure
+```
+src/
+  assets/      # images and icons
+  hooks/       # custom hooks (e.g. useIsMobile)
+  layout/      # shared layout components such as Sidebar
+  pages/       # page components: Config, InjectionSchedule, OralSchedule, etc.
+  slices/      # Redux slices
+  store/       # Redux store configuration
+  version.ts   # current application version
+```
+
+## Dev Setup
+Run the setup script once:
 ```bash
 npm run setup
 ```
-
-After the setup you can use the standard Vite scripts:
-
+After that the usual Vite scripts are available:
 ```bash
 npm run dev       # start dev server
 npm run build     # production build
@@ -20,10 +55,16 @@ npm run lint      # run ESLint
 npm run format    # run Prettier
 ```
 
-The application will display `Welcome to TRT Planner` and persist state across reloads.
+## Versioning & Changelog
+The current version is tracked in `src/version.ts`. Each commit bumps the patch number and appends an entry to both **CHANGELOG.md** and **README.md**.
+
+## Privacy
+TRT Planner does not send data anywhere. All configuration and schedules are stored in the browser via `localStorage`.
+
+## Author
+The TRT Planner team
 
 ## Changelog
-
 - 2025-06-29 20:11 · Unspecified task · v0.0.0004
 - 2025-06-29 20:14 · Extend Config page to record injectables · v0.0.0005
 - 2025-06-29 20:54 · Unspecified task · v0.0.0006
@@ -47,9 +88,10 @@ The application will display `Welcome to TRT Planner` and persist state across r
 - 2025-06-29 23:52 · Unspecified task · v0.0.0025
 - 2025-06-29 23:54 · Improve visual separation between medication calendar blocks on Injection Schedule page · v0.0.0026
 - 2025-06-30 00:16 · Unspecified task · v0.0.0027
-
 - 2025-06-30 00:18 · Make calendar view responsive: 2 months on desktop, 1 month on mobile · v0.0.0028
 - 2025-06-30 00:25 · Unspecified task · v0.0.0029
 - 2025-06-30 00:28 · Add configurable injection frequency logic with apply/reset controls for each medication section · v0.0.0030
 - 2025-06-30 00:39 · Unspecified task · v0.0.0031
 - 2025-06-30 00:40 · Tweak calendar visuals and UX for injection frequency controls · v0.0.0032
+- 2025-06-30 00:57 · Unspecified task · v0.0.0033
+- 2025-06-30 00:58 · Generate full README file describing app purpose, architecture, and usage · v0.0.0034
