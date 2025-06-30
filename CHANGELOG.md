@@ -22,3 +22,6 @@
 - 2025-06-29 23:37 · Display a calendar for each enabled injectable medication · v0.0.0024
 - 2025-06-29 23:52 · Unspecified task · v0.0.0025
 - 2025-06-29 23:54 · Improve visual separation between medication calendar blocks on Injection Schedule page · v0.0.0026
+- 2025-06-30 00:16 · Unspecified task · v0.0.0027
+
+- 2025-06-30 00:18 · Make calendar view responsive: 2 months on desktop, 1 month on mobile · v0.0.0028

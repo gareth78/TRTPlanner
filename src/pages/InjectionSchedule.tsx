@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
+import useIsMobile from '../hooks/useIsMobile';
 import 'react-calendar/dist/Calendar.css';
 import styles from './InjectionSchedule.module.css';
 
@@ -20,6 +21,7 @@ const sameDay = (a: Date, b: Date) =>
 function InjectionSchedule() {
   const [meds, setMeds] = useState<Medication[]>([]);
   const [dates, setDates] = useState<Selections>({});
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     try {
@@ -69,7 +71,7 @@ function InjectionSchedule() {
           >
             <h2 className={styles.sectionTitle}>{m.name}</h2>
             <Calendar
-              showDoubleView
+              showDoubleView={!isMobile}
               prev2Label={null}
               next2Label={null}
               onClickDay={(d) => toggleDate(m.name, d)}
