@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import useIsMobile from '../hooks/useIsMobile';
 import 'react-calendar/dist/Calendar.css';
-import DrugSchedule, { Frequency, ScheduleConfig } from './DrugSchedule';
+import DrugSchedule from './DrugSchedule';
+import type { Frequency, ScheduleConfig } from './DrugSchedule';
 import styles from './InjectionSchedule.module.css';
 
 interface Medication {

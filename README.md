@@ -114,3 +114,5 @@ The TRT Planner team
 - 2025-06-30 01:04 · End of Day 1 milestone · v0.1.0000
 - 2025-06-30 14:43 · Unspecified task · v0.1.0001
 - 2025-06-30 14:48 · Refactor injection schedule view to use horizontal drug tab navigation · v0.1.0002
+- 2025-06-30 19:35 · Unspecified task · v0.1.0003
+- 2025-06-30 19:39 · Fix broken import and DOM event listener error to restore live preview rendering · v0.1.0004
