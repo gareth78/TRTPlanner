@@ -127,3 +127,4 @@ The MediTrack team
 - 2025-06-30 21:52 · Add Firebase anonymous auth and Firestore-based schedule syncing · v0.1.0012
 - 2025-06-30 22:29 · Unspecified task · v0.1.0013
 - 2025-06-30 22:40 · Enable anonymous Firebase Auth and auto-sign-in · v0.1.0014
+- 2025-06-30 23:24 · Unspecified task · v0.1.0015
