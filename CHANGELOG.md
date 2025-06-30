@@ -33,3 +33,5 @@
 - 2025-06-30 00:58 · Generate full README file describing app purpose, architecture, and usage · v0.0.0034
 - 2025-06-30 01:03 · Unspecified task · v0.0.0035
 - 2025-06-30 01:04 · End of Day 1 milestone · v0.1.0000
+- 2025-06-30 13:29 · Unspecified task · v0.1.0001
+- 2025-06-30 13:36 · Add multi-user support with authentication and per-user data separation · v0.2.0001

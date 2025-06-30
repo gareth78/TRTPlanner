@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { useUser } from '../context/UserContext';
+import { loadUserData, saveUserData } from '../services/userData';
 import styles from './OralSchedule.module.css';
 
 interface ScheduleEntry {
@@ -10,29 +12,27 @@ interface ScheduleEntry {
 }
 
 function OralSchedule() {
+  const { user } = useUser();
   const [entries, setEntries] = useState<ScheduleEntry[]>([]);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('oralSchedule');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
+    if (!user) return;
+    loadUserData(user.uid)
+      .then((data) => {
+        const stored = data.oralSchedule;
+        if (Array.isArray(stored)) {
           setEntries(
-            parsed.map((e: ScheduleEntry) => ({
+            stored.map((e: ScheduleEntry) => ({
               medication: e.medication ?? '',
               date: e.date ?? '',
               disabled: e.disabled ?? false,
             })),
           );
         }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to parse schedule', err);
-      }
-    }
-  }, []);
+      })
+      .catch(() => setEntries([]));
+  }, [user]);
 
   const handleMedicationChange = (idx: number, value: string) => {
     const updated = [...entries];
@@ -67,9 +67,10 @@ function OralSchedule() {
     }
   };
 
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    localStorage.setItem('oralSchedule', JSON.stringify(entries));
+    if (!user) return;
+    await saveUserData(user.uid, { oralSchedule: entries });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };

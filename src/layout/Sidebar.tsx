@@ -1,54 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/trt_logo.svg';
+import { useUser } from '../context/UserContext';
+import { loadUserData } from '../services/userData';
 import styles from './Sidebar.module.css';
 
 function Sidebar() {
+  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [hasInjectables, setHasInjectables] = useState(false);
   const [hasOrals, setHasOrals] = useState(false);
 
-  const checkMedications = () => {
-    try {
-      const cfgRaw = localStorage.getItem('configSettings');
-      const cfg = cfgRaw ? JSON.parse(cfgRaw) : {};
-      const inj = Array.isArray(cfg.injectables)
-        ? cfg.injectables
-        : JSON.parse(localStorage.getItem('injectables') || '[]');
-      const oral = Array.isArray(cfg.orals)
-        ? cfg.orals
-        : JSON.parse(localStorage.getItem('orals') || '[]');
-
-      setHasInjectables(
-        Array.isArray(inj) && inj.some((i: { disabled?: boolean }) => !i.disabled),
-      );
-      setHasOrals(
-        Array.isArray(oral) && oral.some((o: { disabled?: boolean }) => !o.disabled),
-      );
-    } catch {
+  const checkMedications = useCallback(() => {
+    if (!user) {
       setHasInjectables(false);
       setHasOrals(false);
+      return;
     }
-  };
+    loadUserData(user.uid)
+      .then((data) => {
+        const cfg = data.settings || {};
+        const inj = Array.isArray(cfg.injectables) ? cfg.injectables : [];
+        const oral = Array.isArray(cfg.orals) ? cfg.orals : [];
+        setHasInjectables(inj.some((i: { disabled?: boolean }) => !i.disabled));
+        setHasOrals(oral.some((o: { disabled?: boolean }) => !o.disabled));
+      })
+      .catch(() => {
+        setHasInjectables(false);
+        setHasOrals(false);
+      });
+  }, [user]);
 
   useEffect(() => {
     checkMedications();
-    const handle = (e: StorageEvent) => {
-      if (
-        e.key === 'injectables' ||
-        e.key === 'orals' ||
-        e.key === 'configSettings'
-      ) {
-        checkMedications();
-      }
-    };
-    window.addEventListener('storage', handle);
-    return () => window.removeEventListener('storage', handle);
-  }, [open]);
+  }, [open, checkMedications]);
 
   const toggle = () => {
     checkMedications();

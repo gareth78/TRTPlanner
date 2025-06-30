@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
+import { useUser } from '../context/UserContext';
+import { loadUserData, saveUserData } from '../services/userData';
 import styles from './Config.module.css';
 
 interface Medication {
@@ -9,13 +11,13 @@ interface Medication {
 }
 
 function Config() {
+  const { user } = useUser();
   const [name, setName] = useState('');
   const [injectables, setInjectables] = useState<Medication[]>([]);
   const [orals, setOrals] = useState<Medication[]>([]);
   const [injDragIndex, setInjDragIndex] = useState<number | null>(null);
   const [oralDragIndex, setOralDragIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
-
 
   const addInjectable = () => {
     setInjectables([...injectables, { name: '', disabled: false }]);
@@ -98,14 +100,14 @@ function Config() {
   };
 
   useEffect(() => {
-    const stored = localStorage.getItem('configSettings');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setName(parsed.name ?? '');
-        if (Array.isArray(parsed.injectables)) {
+    if (!user) return;
+    loadUserData(user.uid)
+      .then((data) => {
+        const cfg = data.settings || {};
+        setName(cfg.name ?? '');
+        if (Array.isArray(cfg.injectables)) {
           setInjectables(
-            parsed.injectables.map((i: Medication) => ({
+            cfg.injectables.map((i: Medication) => ({
               name: i.name ?? '',
               disabled: i.disabled ?? false,
             })),
@@ -113,9 +115,9 @@ function Config() {
         } else {
           setInjectables([]);
         }
-        if (Array.isArray(parsed.orals)) {
+        if (Array.isArray(cfg.orals)) {
           setOrals(
-            parsed.orals.map((o: Medication) => ({
+            cfg.orals.map((o: Medication) => ({
               name: o.name ?? '',
               disabled: o.disabled ?? false,
             })),
@@ -123,36 +125,41 @@ function Config() {
         } else {
           setOrals([]);
         }
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to parse settings', e);
-      }
-    }
-  }, []);
+      })
+      .catch(() => {
+        setName('');
+        setInjectables([]);
+        setOrals([]);
+      });
+  }, [user]);
 
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
     const data = {
       name,
       injectables,
       orals,
     };
-    localStorage.setItem('configSettings', JSON.stringify(data));
+    await saveUserData(user.uid, { settings: data });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const handleDeleteAll = () => {
+  const handleDeleteAll = async () => {
     // eslint-disable-next-line no-alert
     if (
       window.confirm(
         'This will permanently delete all saved configuration and injectable data. Are you sure you want to continue?',
       )
     ) {
-      localStorage.removeItem('configSettings');
-      localStorage.removeItem('injectables');
-      localStorage.removeItem('orals');
-      localStorage.removeItem('persist:root');
+      if (user) {
+        await saveUserData(user.uid, {
+          settings: {},
+          injectionSchedule: {},
+          oralSchedule: [],
+        });
+      }
       setName('');
       setInjectables([]);
       setOrals([]);
@@ -224,7 +231,11 @@ function Config() {
             </div>
           </div>
         ))}
-        <button type="button" className={styles.addButton} onClick={addInjectable}>
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={addInjectable}
+        >
           Add another
         </button>
 

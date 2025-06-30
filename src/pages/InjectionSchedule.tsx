@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import useIsMobile from '../hooks/useIsMobile';
 import 'react-calendar/dist/Calendar.css';
+import { useUser } from '../context/UserContext';
+import { loadUserData, saveUserData } from '../services/userData';
 import styles from './InjectionSchedule.module.css';
 
 interface Medication {
@@ -22,36 +24,41 @@ interface ScheduleMap {
 }
 
 function InjectionSchedule() {
+  const { user } = useUser();
   const [meds, setMeds] = useState<Medication[]>([]);
   const [configs, setConfigs] = useState<ScheduleMap>({});
   const [editing, setEditing] = useState<ScheduleMap>({});
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('configSettings');
-      const cfg = raw ? JSON.parse(raw) : {};
-      const injectables: Medication[] = Array.isArray(cfg.injectables)
-        ? cfg.injectables
-        : JSON.parse(localStorage.getItem('injectables') || '[]');
-      const active = injectables.filter((m) => m.name && !m.disabled);
-      setMeds(active);
+    if (!user) return;
+    loadUserData(user.uid)
+      .then((data) => {
+        const cfg = data.settings || {};
+        const injectables: Medication[] = Array.isArray(cfg.injectables)
+          ? cfg.injectables
+          : [];
+        const active = injectables.filter((m) => m.name && !m.disabled);
+        setMeds(active);
 
-      const stored = localStorage.getItem('injectionSchedule');
-      const parsed: ScheduleMap = stored ? JSON.parse(stored) : {};
-      setConfigs(parsed);
-      const edit: ScheduleMap = {};
-      active.forEach((m) => {
-        edit[m.name] =
-          parsed[m.name] || { frequency: 'daily', daysOfWeek: [], anchor: undefined };
+        const parsed: ScheduleMap = data.injectionSchedule || {};
+        setConfigs(parsed);
+        const edit: ScheduleMap = {};
+        active.forEach((m) => {
+          edit[m.name] = parsed[m.name] || {
+            frequency: 'daily',
+            daysOfWeek: [],
+            anchor: undefined,
+          };
+        });
+        setEditing(edit);
+      })
+      .catch(() => {
+        setMeds([]);
+        setConfigs({});
+        setEditing({});
       });
-      setEditing(edit);
-    } catch {
-      setMeds([]);
-      setConfigs({});
-      setEditing({});
-    }
-  }, []);
+  }, [user]);
 
   const handleFreqChange = (name: string, freq: Frequency) => {
     setEditing((prev) => {
@@ -87,18 +94,20 @@ function InjectionSchedule() {
   };
 
   const applyConfig = (name: string) => {
+    if (!user) return;
     setConfigs((prev) => {
       const updated = { ...prev, [name]: editing[name] };
-      localStorage.setItem('injectionSchedule', JSON.stringify(updated));
+      saveUserData(user.uid, { injectionSchedule: updated });
       return updated;
     });
   };
 
   const resetConfig = (name: string) => {
+    if (!user) return;
     setConfigs((prev) => {
       const updated = { ...prev };
       delete updated[name];
-      localStorage.setItem('injectionSchedule', JSON.stringify(updated));
+      saveUserData(user.uid, { injectionSchedule: updated });
       return updated;
     });
     setEditing((prev) => ({
@@ -106,7 +115,6 @@ function InjectionSchedule() {
       [name]: { frequency: 'daily', daysOfWeek: [], anchor: undefined },
     }));
   };
-
 
   const tileClassName =
     (name: string) =>
@@ -208,10 +216,14 @@ function InjectionSchedule() {
                       <input
                         id={`day-${m.name}-${d}`}
                         type="checkbox"
-                        checked={editing[m.name]?.daysOfWeek?.includes(d) || false}
+                        checked={
+                          editing[m.name]?.daysOfWeek?.includes(d) || false
+                        }
                         onChange={() => toggleDayOfWeek(m.name, d)}
                       />
-                      <label htmlFor={`day-${m.name}-${d}`}>{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]}</label>
+                      <label htmlFor={`day-${m.name}-${d}`}>
+                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]}
+                      </label>
                     </div>
                   ))}
                 </div>
