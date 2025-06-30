@@ -3,7 +3,7 @@ import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import styles from './OralSchedule.module.css';
 import { useUser } from '../UserContext';
-import { loadSchedule, saveSchedule } from '../firebase';
+import { loadSchedule, saveSchedule } from '../firebase/firebase';
 
 interface ScheduleEntry {
   medication: string;

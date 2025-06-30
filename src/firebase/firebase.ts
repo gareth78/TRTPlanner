@@ -3,32 +3,31 @@ import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAzi83JX-klIIak_S1jvXrDUjvSwiaLRFo",
-  authDomain: "meditrack-c20a7.firebaseapp.com",
-  projectId: "meditrack-c20a7",
-  storageBucket: "meditrack-c20a7.firebasestorage.app",
-  messagingSenderId: "718086036874",
-  appId: "1:718086036874:web:409b553b32bf9ac35b3c73",
-  measurementId: "G-TLYF3TTXMD"
+  apiKey: 'AIzaSyAzi83JX-klIIak_S1jvXrDUjvSwiaLRFo',
+  authDomain: 'meditrack-c20a7.firebaseapp.com',
+  projectId: 'meditrack-c20a7',
+  storageBucket: 'meditrack-c20a7.firebasestorage.app',
+  messagingSenderId: '718086036874',
+  appId: '1:718086036874:web:409b553b32bf9ac35b3c73',
+  measurementId: 'G-TLYF3TTXMD',
 };
 
-
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
+// Sign in anonymously on startup if no user is signed in
+if (!auth.currentUser) {
+  signInAnonymously(auth).catch((err) => {
+    console.error('Anonymous sign-in failed:', err);
+  });
+}
+
+// Additional auth providers can be added here later
+
 export function initFirebaseAuth(cb: (uid: string | null) => void) {
-  return onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      cb(user.uid);
-    } else {
-      try {
-        const cred = await signInAnonymously(auth);
-        cb(cred.user.uid);
-      } catch {
-        cb(null);
-      }
-    }
+  return onAuthStateChanged(auth, (user) => {
+    cb(user ? user.uid : null);
   });
 }
 

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { initFirebaseAuth } from './firebase';
+import { initFirebaseAuth } from './firebase/firebase';
 
 interface UserState {
   uid: string | null;

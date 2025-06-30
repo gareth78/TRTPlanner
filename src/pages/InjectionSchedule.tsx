@@ -5,7 +5,7 @@ import DrugSchedule from './DrugSchedule';
 import type { Frequency, ScheduleConfig } from './DrugSchedule';
 import styles from './InjectionSchedule.module.css';
 import { useUser } from '../UserContext';
-import { loadSchedule, saveSchedule } from '../firebase';
+import { loadSchedule, saveSchedule } from '../firebase/firebase';
 
 interface Medication {
   name: string;
