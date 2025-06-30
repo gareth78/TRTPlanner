@@ -3,13 +3,15 @@ import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAzi83JX-klIIak_S1jvXrDUjvSwiaLRFo",
+  authDomain: "meditrack-c20a7.firebaseapp.com",
+  projectId: "meditrack-c20a7",
+  storageBucket: "meditrack-c20a7.firebasestorage.app",
+  messagingSenderId: "718086036874",
+  appId: "1:718086036874:web:409b553b32bf9ac35b3c73",
+  measurementId: "G-TLYF3TTXMD"
 };
+
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
