@@ -1,9 +1,10 @@
 .container {
-  background: #f9fafb;
+  background: #6a2aff;
   padding: 2rem;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Nunito', 'Inter', sans-serif;
+  color: #f5f5f5;
   max-width: 600px;
 }
 
@@ -16,18 +17,19 @@
 
 .label {
   font-weight: 500;
-  color: #1e293b;
+  color: #f5f5f5;
 }
 
 .input,
 .select {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #00e0ff;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-family: inherit;
-  background: #fff;
+  background: #1b005a;
+  color: #f5f5f5;
   transition:
     box-shadow 0.2s ease,
     border-color 0.2s ease;
@@ -36,8 +38,8 @@
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #64748b;
-  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.3);
+  border-color: #fd38c0;
+  box-shadow: 0 0 0 3px rgba(253, 56, 192, 0.4);
 }
 
 .select {
@@ -56,21 +58,21 @@
   margin-bottom: 2rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #f5f5f5;
 }
 
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #f5f5f5;
   margin: 1rem 0 0.5rem;
 }
 
 .saveButton {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: #1e293b;
-  color: #ffffff;
+  background: #fd38c0;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -82,8 +84,8 @@
 .addButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -94,11 +96,11 @@
 }
 
 .addButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .saveButton:hover {
-  background: #334155;
+  background: #6a2aff;
 }
 
 .savedMessage {
@@ -138,8 +140,8 @@
 }
 
 .smallButton {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem 0.5rem;
@@ -149,12 +151,12 @@
 }
 
 .smallButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .iconButton {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #00e0ff;
+  color: #1b005a;
   border: none;
   border-radius: 0.375rem;
   padding: 0.25rem;
@@ -169,7 +171,7 @@
 }
 
 .iconButton:hover {
-  background: #cbd5e1;
+  background: #6a2aff;
 }
 
 .dragHandle {
