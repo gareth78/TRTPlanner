@@ -2,7 +2,7 @@
   min-height: 100vh;
   background:
     url('../assets/bg_pattern.svg') repeat,
-    #1b005a;
+    radial-gradient(circle at top, #ffffff, #f1f5f9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,10 +10,10 @@
 }
 
 .card {
-  background: #6a2aff;
+  background: white;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -26,6 +26,6 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-top: 1rem;
-  color: #f5f5f5;
-  font-family: 'Nunito', 'Inter', sans-serif;
+  color: #1e293b;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
