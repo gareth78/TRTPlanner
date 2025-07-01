@@ -142,3 +142,5 @@ The MediTrack team
 - 2025-07-01 00:48 · Add email/password signup and login with anonymous account linking · v0.1.0026
 - 2025-07-01 00:57 · Unspecified task · v0.1.0027
 - 2025-07-01 01:05 · Add AuthStatus component with logout button for Firebase auth testing · v0.1.0028
+- 2025-07-01 01:25 · Unspecified task · v0.1.0029
+- 2025-07-01 01:28 · Implement email/password login form and logout flow with auth state management · v0.1.0030
