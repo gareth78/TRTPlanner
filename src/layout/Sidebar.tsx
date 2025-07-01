@@ -130,9 +130,9 @@ function Sidebar() {
             >
               <FaCog /> Configuration
             </NavLink>
+            <div className="mt-6 text-center text-sm text-gray-500">v{version}</div>
           </nav>
         </div>
-        <div className={styles.version}>v{version}</div>
       </aside>
     </>
   );
