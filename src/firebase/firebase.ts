@@ -10,6 +10,11 @@ import {
   EmailAuthProvider,
   setPersistence,
   browserLocalPersistence,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup,
+  linkWithPopup,
+  sendPasswordResetEmail,
   type User,
 } from 'firebase/auth';
 import type { FirebaseError } from 'firebase/app';
@@ -110,4 +115,48 @@ export async function loginWithEmail(email: string, password: string) {
   }
   const res = await signInWithEmailAndPassword(auth, email, password);
   return res.user;
+}
+
+// Social login with Google
+export async function loginWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  if (auth.currentUser && auth.currentUser.isAnonymous) {
+    try {
+      const res = await linkWithPopup(auth.currentUser, provider);
+      return res.user;
+    } catch (err: unknown) {
+      const { code } = err as FirebaseError;
+      if (code === 'auth/credential-already-in-use') {
+        const userCred = await signInWithPopup(auth, provider);
+        return userCred.user;
+      }
+      throw err;
+    }
+  }
+  const res = await signInWithPopup(auth, provider);
+  return res.user;
+}
+
+// Social login with Facebook
+export async function loginWithFacebook() {
+  const provider = new FacebookAuthProvider();
+  if (auth.currentUser && auth.currentUser.isAnonymous) {
+    try {
+      const res = await linkWithPopup(auth.currentUser, provider);
+      return res.user;
+    } catch (err: unknown) {
+      const { code } = err as FirebaseError;
+      if (code === 'auth/credential-already-in-use') {
+        const userCred = await signInWithPopup(auth, provider);
+        return userCred.user;
+      }
+      throw err;
+    }
+  }
+  const res = await signInWithPopup(auth, provider);
+  return res.user;
+}
+
+export function resetPassword(email: string) {
+  return sendPasswordResetEmail(auth, email);
 }
