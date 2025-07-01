@@ -5,6 +5,7 @@ import { GiMedicines } from 'react-icons/gi';
 import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/MediTrack_logo_svg.svg';
+import AuthStatus from '../components/AuthStatus';
 import styles from './Sidebar.module.css';
 import useOutsideClick from '../hooks/useOutsideClick';
 
@@ -130,7 +131,12 @@ function Sidebar() {
             >
               <FaCog /> Configuration
             </NavLink>
-            <div className="mt-6 text-center text-sm text-gray-500">v{version}</div>
+            <div className="mt-4">
+              <AuthStatus />
+            </div>
+            <div className="mt-6 text-center text-sm text-gray-500">
+              v{version}
+            </div>
           </nav>
         </div>
       </aside>
