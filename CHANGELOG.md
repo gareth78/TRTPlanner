@@ -71,3 +71,5 @@
 - 2025-07-01 02:02 · Unspecified task · v0.1.0035
 - 2025-07-01 02:05 · Scope Firestore access to each user’s UID to isolate data · v0.1.0036
 - 2025-07-01 08:29 · Unspecified task · v0.1.0037
+- 2025-07-01 10:22 · Unspecified task · v0.1.0038
+- 2025-07-01 10:26 · Rename app from TRT Planner to MediTrack · v0.1.0039
