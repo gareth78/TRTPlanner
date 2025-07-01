@@ -60,3 +60,5 @@
 - 2025-07-01 00:25 · Reintroduce share-modal.js with null-safe listener · v0.1.0024
 - 2025-07-01 00:45 · Unspecified task · v0.1.0025
 - 2025-07-01 00:48 · Add email/password signup and login with anonymous account linking · v0.1.0026
+- 2025-07-01 00:57 · Unspecified task · v0.1.0027
+- 2025-07-01 01:05 · Add AuthStatus component with logout button for Firebase auth testing · v0.1.0028
