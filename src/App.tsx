@@ -6,9 +6,24 @@ import OralSchedule from './pages/OralSchedule';
 import TravelPlans from './pages/TravelPlans';
 import Config from './pages/Config';
 import Signup from './components/Auth/Signup';
-import Login from './components/Auth/Login';
+import LoginForm from './components/Auth/LoginForm';
+import { useUser } from './UserContext';
 
 function App() {
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return <div className="p-4">Loading...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+        <LoginForm />
+      </div>
+    );
+  }
+
   return (
     <Router>
       <div style={{ display: 'flex' }}>
@@ -21,7 +36,6 @@ function App() {
             <Route path="/travel" element={<TravelPlans />} />
             <Route path="/config" element={<Config />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </div>
