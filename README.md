@@ -71,3 +71,4 @@ Current version: `0.1.0000`
 ## Changelog
 
 - 2025-07-01 14:35 · Unspecified task · v0.1.0044
+- 2025-07-01 15:13 · Unspecified task · v0.1.0045

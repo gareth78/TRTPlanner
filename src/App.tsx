@@ -5,8 +5,8 @@ import InjectionSchedule from './pages/InjectionSchedule';
 import OralSchedule from './pages/OralSchedule';
 import TravelPlans from './pages/TravelPlans';
 import Config from './pages/Config';
-import Signup from './components/Auth/Signup';
-import LoginScreen from './components/Auth/LoginScreen';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import { useUser } from './UserContext';
 
 function App() {
@@ -18,9 +18,12 @@ function App() {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-        <LoginScreen />
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<LoginPage />} />
+        </Routes>
+      </Router>
     );
   }
 
@@ -35,7 +38,8 @@ function App() {
             <Route path="/oral" element={<OralSchedule />} />
             <Route path="/travel" element={<TravelPlans />} />
             <Route path="/config" element={<Config />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </main>
       </div>
