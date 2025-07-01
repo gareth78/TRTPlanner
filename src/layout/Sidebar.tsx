@@ -84,7 +84,7 @@ function Sidebar() {
       </button>
       <aside
         ref={sidebarRef}
-        className={`${styles.sidebar} ${!open ? styles.closed : ''}`}
+        className={`${styles.sidebar} sidebar-gradient ${!open ? styles.closed : ''}`}
       >
         <div>
           <div className={styles.logoContainer}>

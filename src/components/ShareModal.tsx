@@ -24,7 +24,7 @@ function ShareModal() {
 
   return (
     <>
-      <button id="share-button" ref={buttonRef}>
+      <button type="button" id="share-button" ref={buttonRef}>
         Share
       </button>
       <div id="share-modal" ref={modalRef} className="modal">

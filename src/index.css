@@ -8,7 +8,15 @@
   /* MediTrack brand colors */
   --accent-primary: #15b39c;
   --accent-secondary: #f37ada;
-  --hover-bg: #d0f3ed;
+  --hover-bg: #0f9481;
+  --sidebar-bg: #f8fafc;
+  --sidebar-gradient: linear-gradient(
+    180deg,
+    var(--sidebar-bg) 0%,
+    var(--accent-primary) 60%,
+    #0e766c 100%
+  );
+  --sidebar-text: #ffffff;
 
   color-scheme: light;
   color: var(--text-main);
@@ -27,6 +35,7 @@ a {
 }
 a:hover {
   background-color: var(--hover-bg);
+  color: var(--sidebar-text);
 }
 
 body {
@@ -58,4 +67,8 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.sidebar-gradient {
+  background: var(--sidebar-gradient);
 }

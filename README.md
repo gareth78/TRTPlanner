@@ -132,3 +132,5 @@ The MediTrack team
 
 - 2025-06-30 23:34 · Fix null element error in share-modal.js using safe event listener attachment · v0.1.0017
 - 2025-06-30 23:41 · Unspecified task · v0.1.0018
+- 2025-07-01 00:07 · Unspecified task · v0.1.0019
+- 2025-07-01 00:09 · Clean up legacy share-modal.js and refresh color + sidebar layout for MediTrack branding · v0.1.0020
