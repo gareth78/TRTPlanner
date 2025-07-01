@@ -1,116 +1,87 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  loginWithEmail,
-  loginAnonymously,
-  resetPassword,
-} from '../firebase/firebase';
-import Logo from '../assets/MediTrack_logo_svg.svg';
+import { useState } from "react";
+import { FiUser, FiLock } from "react-icons/fi";
+import { handleLogin } from "@/services/auth";
+import Logo from "../assets/MediTrack_logo_svg.svg";
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [info, setInfo] = useState('');
+const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setInfo('');
-    setLoading(true);
     try {
-      await loginWithEmail(email, password);
-      navigate('/');
-    } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError(String(err));
-    } finally {
-      setLoading(false);
+      await handleLogin(username, password);
+      setError("");
+      window.location.href = "/dashboard";
+    } catch (err) {
+      setError("Invalid username or password");
     }
   };
 
-  const handleGuest = async () => {
-    setError('');
-    setInfo('');
-    setLoading(true);
-    try {
-      await loginAnonymously();
-      navigate('/');
-    } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError(String(err));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleReset = async () => {
-    if (!email) return;
-    try {
-      await resetPassword(email);
-      setInfo('Password reset email sent');
-    } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError(String(err));
-    }
+  const loginAsGuest = () => {
+    localStorage.setItem("access_token", "guest_token");
+    window.location.href = "/dashboard";
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
-      <div className="w-full max-w-md space-y-4 rounded-xl bg-white p-8 shadow-lg">
-        <img src={Logo} alt="MediTrack logo" className="mx-auto w-32" />
-        <h1 className="text-center text-2xl font-semibold text-gray-700">Login</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            className="w-full rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            className="w-full rounded border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {error && <div className="text-sm text-red-600">{error}</div>}
-          {info && !error && <div className="text-sm text-green-600">{info}</div>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded bg-gradient-to-r from-blue-500 to-purple-600 py-2 font-semibold text-white hover:opacity-90 disabled:opacity-60"
-          >
-            {loading ? 'Signing in...' : 'Login'}
-          </button>
-        </form>
-        <button
-          type="button"
-          onClick={handleGuest}
-          disabled={loading}
-          className="w-full rounded bg-gradient-to-r from-blue-500 to-purple-600 py-2 font-semibold text-white hover:opacity-90 disabled:opacity-60"
-        >
-          Login as Guest
-        </button>
-        <button type="button" onClick={handleReset} className="text-sm text-blue-600 hover:underline">
-          Forgot password?
-        </button>
-        <div className="my-2 flex items-center gap-2 text-gray-400">
-          <span className="h-px flex-1 bg-gray-200" />
-          <span className="text-sm">or</span>
-          <span className="h-px flex-1 bg-gray-200" />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-white p-8 shadow-lg rounded-lg">
+        <div className="flex justify-center mb-6">
+          <img src={Logo} alt="MediTrack Logo" className="h-12" />
         </div>
-        <p className="text-center text-sm">
-          <Link to="/signup" className="text-blue-600 hover:underline">
-            Sign up
-          </Link>
-        </p>
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
+          Sign in to MediTrack
+        </h2>
+        {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Username</label>
+            <div className="mt-1 relative">
+              <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-accent-primary focus:border-accent-primary"
+                placeholder="Enter username"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <div className="mt-1 relative">
+              <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-accent-primary focus:border-accent-primary"
+                placeholder="Enter password"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="w-full bg-accent-primary hover:bg-hover-bg text-white font-semibold py-2 px-4 rounded"
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={loginAsGuest}
+              className="w-full bg-accent-secondary hover:bg-pink-500 text-white font-semibold py-2 px-4 rounded"
+            >
+              Continue as Guest
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;
