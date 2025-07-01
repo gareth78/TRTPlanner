@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import {
   getAuth,
   signInAnonymously,
@@ -56,17 +56,25 @@ export function initFirebaseAuth(cb: (user: User | null) => void) {
 
 // Save a schedule to Firestore
 export async function saveSchedule(
-  uid: string,
+  uid: string | undefined,
   drugName: string,
   data: unknown,
 ) {
+  if (!uid) throw new Error('saveSchedule requires a user id');
   await setDoc(doc(db, 'users', uid, 'schedules', drugName), data);
 }
 
 // Load a schedule from Firestore
-export async function loadSchedule(uid: string, drugName: string) {
+export async function loadSchedule(uid: string | undefined, drugName: string) {
+  if (!uid) return null;
   const snap = await getDoc(doc(db, 'users', uid, 'schedules', drugName));
   return snap.exists() ? snap.data() : null;
+}
+
+// Delete a schedule from Firestore
+export async function deleteSchedule(uid: string | undefined, drugName: string) {
+  if (!uid) throw new Error('deleteSchedule requires a user id');
+  await deleteDoc(doc(db, 'users', uid, 'schedules', drugName));
 }
 
 // Create account or link anonymous user to email/password
