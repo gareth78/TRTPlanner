@@ -5,7 +5,7 @@ import InjectionSchedule from './pages/InjectionSchedule';
 import OralSchedule from './pages/OralSchedule';
 import TravelPlans from './pages/TravelPlans';
 import Config from './pages/Config';
-import LoginPage from './pages/LoginPage';
+import BootstrapLogin from './pages/BootstrapLogin';
 import SignupPage from './pages/SignupPage';
 import { useUser } from './UserContext';
 
@@ -21,7 +21,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<LoginPage />} />
+          <Route path="*" element={<BootstrapLogin />} />
         </Routes>
       </Router>
     );
@@ -39,7 +39,7 @@ function App() {
             <Route path="/travel" element={<TravelPlans />} />
             <Route path="/config" element={<Config />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<BootstrapLogin />} />
           </Routes>
         </main>
       </div>
