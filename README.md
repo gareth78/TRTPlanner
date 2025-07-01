@@ -50,6 +50,7 @@ src/
 ## Roadmap
 
 Planned features:
+
 - Reminder notifications (local or push)
 - Export/import plans and logs
 - Multi-user support
@@ -63,5 +64,10 @@ Pull requests welcome! For larger changes, please open an issue first to discuss
 
 ## Version
 
-Current version: `0.1.0000`  
+Current version: `0.1.0000`
+
 <!-- Minor updates (0.1.0000+) will be tracked in CHANGELOG.md -->
+
+## Changelog
+
+- 2025-07-01 14:35 · Unspecified task · v0.1.0044
