@@ -64,7 +64,7 @@ Pull requests welcome! For larger changes, please open an issue first to discuss
 
 ## Version
 
-Current version: `0.1.0000`
+Current version: `0.1.0047`
 
 <!-- Minor updates (0.1.0000+) will be tracked in CHANGELOG.md -->
 
@@ -72,3 +72,5 @@ Current version: `0.1.0000`
 
 - 2025-07-01 14:35 · Unspecified task · v0.1.0044
 - 2025-07-01 15:13 · Unspecified task · v0.1.0045
+- 2025-07-01 15:42 · Unspecified task · v0.1.0046
+- 2025-07-01 15:44 · Redesign login screen to match modern gradient layout with MediTrack logo and styled inputs · v0.1.0047
