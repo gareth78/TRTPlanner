@@ -6,7 +6,7 @@ import OralSchedule from './pages/OralSchedule';
 import TravelPlans from './pages/TravelPlans';
 import Config from './pages/Config';
 import Signup from './components/Auth/Signup';
-import LoginForm from './components/Auth/LoginForm';
+import LoginScreen from './components/Auth/LoginScreen';
 import { useUser } from './UserContext';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   if (!user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-        <LoginForm />
+        <LoginScreen />
       </div>
     );
   }

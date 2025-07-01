@@ -37,11 +37,9 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
   console.error('Failed to set persistence:', err);
 });
 
-// Sign in anonymously on startup if no user is signed in
-if (!auth.currentUser) {
-  signInAnonymously(auth).catch((err) => {
-    console.error('Anonymous sign-in failed:', err);
-  });
+// Manual anonymous sign-in is triggered from the login screen
+export function loginAnonymously() {
+  return signInAnonymously(auth);
 }
 
 // Listen for auth state changes

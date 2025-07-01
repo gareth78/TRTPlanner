@@ -72,3 +72,20 @@ button:focus-visible {
 .sidebar-gradient {
   background: var(--sidebar-gradient);
 }
+
+/* Utility classes for brand colors */
+.bg-accent-primary {
+  background-color: var(--accent-primary);
+}
+
+.text-accent-primary {
+  color: var(--accent-primary);
+}
+
+.text-accent-secondary {
+  color: var(--accent-secondary);
+}
+
+.border-accent-primary {
+  border-color: var(--accent-primary);
+}

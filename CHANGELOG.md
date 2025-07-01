@@ -64,3 +64,5 @@
 - 2025-07-01 01:05 · Add AuthStatus component with logout button for Firebase auth testing · v0.1.0028
 - 2025-07-01 01:25 · Unspecified task · v0.1.0029
 - 2025-07-01 01:28 · Implement email/password login form and logout flow with auth state management · v0.1.0030
+- 2025-07-01 01:34 · Unspecified task · v0.1.0031
+- 2025-07-01 01:38 · Add branded login screen with anonymous and email/password auth options · v0.1.0032
