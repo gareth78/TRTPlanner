@@ -136,3 +136,5 @@ The MediTrack team
 - 2025-07-01 00:09 · Clean up legacy share-modal.js and refresh color + sidebar layout for MediTrack branding · v0.1.0020
 - 2025-07-01 00:15 · Unspecified task · v0.1.0021
 - 2025-07-01 00:16 · Improve version display layout and styling in sidebar · v0.1.0022
+- 2025-07-01 00:24 · Unspecified task · v0.1.0023
+- 2025-07-01 00:25 · Reintroduce share-modal.js with null-safe listener · v0.1.0024
