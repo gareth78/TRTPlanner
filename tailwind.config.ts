@@ -1,5 +1,4 @@
-// tailwind.config.ts
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -7,13 +6,7 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        "accent-primary": "var(--accent-primary)",
-        "accent-secondary": "var(--accent-secondary)",
-        "hover-bg": "var(--hover-bg)",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };
