@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
+import { useUser } from '../UserContext';
+import storageKey from '../storage';
 import styles from './Config.module.css';
 
 interface Medication {
@@ -9,13 +11,13 @@ interface Medication {
 }
 
 function Config() {
+  const { uid } = useUser();
   const [name, setName] = useState('');
   const [injectables, setInjectables] = useState<Medication[]>([]);
   const [orals, setOrals] = useState<Medication[]>([]);
   const [injDragIndex, setInjDragIndex] = useState<number | null>(null);
   const [oralDragIndex, setOralDragIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
-
 
   const addInjectable = () => {
     setInjectables([...injectables, { name: '', disabled: false }]);
@@ -98,37 +100,41 @@ function Config() {
   };
 
   useEffect(() => {
-    const stored = localStorage.getItem('configSettings');
+    const stored = localStorage.getItem(storageKey(uid, 'configSettings'));
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         setName(parsed.name ?? '');
-        if (Array.isArray(parsed.injectables)) {
-          setInjectables(
-            parsed.injectables.map((i: Medication) => ({
-              name: i.name ?? '',
-              disabled: i.disabled ?? false,
-            })),
-          );
-        } else {
-          setInjectables([]);
-        }
-        if (Array.isArray(parsed.orals)) {
-          setOrals(
-            parsed.orals.map((o: Medication) => ({
-              name: o.name ?? '',
-              disabled: o.disabled ?? false,
-            })),
-          );
-        } else {
-          setOrals([]);
-        }
+        const inj = Array.isArray(parsed.injectables)
+          ? parsed.injectables
+          : JSON.parse(
+              localStorage.getItem(storageKey(uid, 'injectables')) || '[]',
+            );
+        const oral = Array.isArray(parsed.orals)
+          ? parsed.orals
+          : JSON.parse(localStorage.getItem(storageKey(uid, 'orals')) || '[]');
+        setInjectables(
+          Array.isArray(inj)
+            ? inj.map((i: Medication) => ({
+                name: i.name ?? '',
+                disabled: i.disabled ?? false,
+              }))
+            : [],
+        );
+        setOrals(
+          Array.isArray(oral)
+            ? oral.map((o: Medication) => ({
+                name: o.name ?? '',
+                disabled: o.disabled ?? false,
+              }))
+            : [],
+        );
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error('Failed to parse settings', e);
       }
     }
-  }, []);
+  }, [uid]);
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -137,7 +143,10 @@ function Config() {
       injectables,
       orals,
     };
-    localStorage.setItem('configSettings', JSON.stringify(data));
+    localStorage.setItem(
+      storageKey(uid, 'configSettings'),
+      JSON.stringify(data),
+    );
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -149,9 +158,9 @@ function Config() {
         'This will permanently delete all saved configuration and injectable data. Are you sure you want to continue?',
       )
     ) {
-      localStorage.removeItem('configSettings');
-      localStorage.removeItem('injectables');
-      localStorage.removeItem('orals');
+      localStorage.removeItem(storageKey(uid, 'configSettings'));
+      localStorage.removeItem(storageKey(uid, 'injectables'));
+      localStorage.removeItem(storageKey(uid, 'orals'));
       localStorage.removeItem('persist:root');
       setName('');
       setInjectables([]);
@@ -224,7 +233,11 @@ function Config() {
             </div>
           </div>
         ))}
-        <button type="button" className={styles.addButton} onClick={addInjectable}>
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={addInjectable}
+        >
           Add another
         </button>
 

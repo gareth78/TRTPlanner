@@ -6,6 +6,7 @@ import type { Frequency, ScheduleConfig } from './DrugSchedule';
 import styles from './InjectionSchedule.module.css';
 import { useUser } from '../UserContext';
 import { loadSchedule, saveSchedule } from '../firebase/firebase';
+import storageKey from '../storage';
 
 interface Medication {
   name: string;
@@ -27,15 +28,17 @@ function InjectionSchedule() {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('configSettings');
+      const raw = localStorage.getItem(storageKey(uid, 'configSettings'));
       const cfg = raw ? JSON.parse(raw) : {};
       const injectables: Medication[] = Array.isArray(cfg.injectables)
         ? cfg.injectables
-        : JSON.parse(localStorage.getItem('injectables') || '[]');
+        : JSON.parse(
+            localStorage.getItem(storageKey(uid, 'injectables')) || '[]',
+          );
       const active = injectables.filter((m) => m.name && !m.disabled);
       setMeds(active);
 
-      const stored = localStorage.getItem('injectionSchedule');
+      const stored = localStorage.getItem(storageKey(uid, 'injectionSchedule'));
       const parsed: ScheduleMap = stored ? JSON.parse(stored) : {};
       setConfigs(parsed);
       const edit: ScheduleMap = {};
@@ -57,7 +60,7 @@ function InjectionSchedule() {
       setConfigs({});
       setEditing({});
     }
-  }, []);
+  }, [uid]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -127,7 +130,10 @@ function InjectionSchedule() {
   const applyConfig = (name: string) => {
     setConfigs((prev) => {
       const updated = { ...prev, [name]: editing[name] };
-      localStorage.setItem('injectionSchedule', JSON.stringify(updated));
+      localStorage.setItem(
+        storageKey(uid, 'injectionSchedule'),
+        JSON.stringify(updated),
+      );
       return updated;
     });
     if (uid) {
@@ -142,7 +148,10 @@ function InjectionSchedule() {
     setConfigs((prev) => {
       const updated = { ...prev };
       delete updated[name];
-      localStorage.setItem('injectionSchedule', JSON.stringify(updated));
+      localStorage.setItem(
+        storageKey(uid, 'injectionSchedule'),
+        JSON.stringify(updated),
+      );
       return updated;
     });
     setEditing((prev) => ({
@@ -203,7 +212,9 @@ function InjectionSchedule() {
               role="tab"
               aria-selected={activeDrug === m.name}
               className={`focus:outline-none ${
-                activeDrug === m.name ? 'border-b-2 border-blue-600' : 'text-gray-500'
+                activeDrug === m.name
+                  ? 'border-b-2 border-blue-600'
+                  : 'text-gray-500'
               }`}
               onClick={() => setActiveDrug(m.name)}
             >

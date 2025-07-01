@@ -4,6 +4,7 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import styles from './OralSchedule.module.css';
 import { useUser } from '../UserContext';
 import { loadSchedule, saveSchedule } from '../firebase/firebase';
+import storageKey from '../storage';
 
 interface ScheduleEntry {
   medication: string;
@@ -19,7 +20,7 @@ function OralSchedule() {
 
   useEffect(() => {
     const load = async () => {
-      const stored = localStorage.getItem('oralSchedule');
+      const stored = localStorage.getItem(storageKey(uid, 'oralSchedule'));
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -40,7 +41,10 @@ function OralSchedule() {
       if (uid) {
         try {
           const data = await loadSchedule(uid, 'oralSchedule');
-          if (data && Array.isArray((data as { entries: ScheduleEntry[] }).entries)) {
+          if (
+            data &&
+            Array.isArray((data as { entries: ScheduleEntry[] }).entries)
+          ) {
             setEntries((data as { entries: ScheduleEntry[] }).entries);
           }
         } catch (err) {
@@ -88,7 +92,10 @@ function OralSchedule() {
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    localStorage.setItem('oralSchedule', JSON.stringify(entries));
+    localStorage.setItem(
+      storageKey(uid, 'oralSchedule'),
+      JSON.stringify(entries),
+    );
     if (uid) {
       try {
         await saveSchedule(uid, 'oralSchedule', { entries });
@@ -107,60 +114,60 @@ function OralSchedule() {
       {loading ? (
         <p className={styles.savedMessage}>Loading schedule...</p>
       ) : (
-      <form className={styles.container} onSubmit={handleSave}>
-        {entries.map((entry, idx) => (
-          <div
-            key={idx} // eslint-disable-line react/no-array-index-key
-            className={styles.injectableRow}
-          >
-            <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
-            <input
-              type="text"
-              placeholder="Medication"
-              className={`${styles.input} ${styles.injectableInput} ${
-                entry.disabled ? styles.disabledInput : ''
-              }`}
-              value={entry.medication}
-              disabled={entry.disabled}
-              onChange={(e) => handleMedicationChange(idx, e.target.value)}
-            />
-            <input
-              type="date"
-              className={`${styles.input} ${styles.injectableInput} ${
-                entry.disabled ? styles.disabledInput : ''
-              }`}
-              value={entry.date}
-              disabled={entry.disabled}
-              onChange={(e) => handleDateChange(idx, e.target.value)}
-            />
-            <div className={styles.injectableActions}>
-              <button
-                type="button"
-                className={styles.iconButton}
-                onClick={() => toggleDisable(idx)}
-                aria-label={entry.disabled ? 'Enable entry' : 'Disable entry'}
-              >
-                <GiSightDisabled size={20} />
-              </button>
-              <button
-                type="button"
-                className={styles.iconButton}
-                onClick={() => deleteEntry(idx)}
-                aria-label="Delete entry"
-              >
-                <FaRegTrashAlt size={20} />
-              </button>
+        <form className={styles.container} onSubmit={handleSave}>
+          {entries.map((entry, idx) => (
+            <div
+              key={idx} // eslint-disable-line react/no-array-index-key
+              className={styles.injectableRow}
+            >
+              <span className={styles.rowIndex}>{`${idx + 1}.`}</span>
+              <input
+                type="text"
+                placeholder="Medication"
+                className={`${styles.input} ${styles.injectableInput} ${
+                  entry.disabled ? styles.disabledInput : ''
+                }`}
+                value={entry.medication}
+                disabled={entry.disabled}
+                onChange={(e) => handleMedicationChange(idx, e.target.value)}
+              />
+              <input
+                type="date"
+                className={`${styles.input} ${styles.injectableInput} ${
+                  entry.disabled ? styles.disabledInput : ''
+                }`}
+                value={entry.date}
+                disabled={entry.disabled}
+                onChange={(e) => handleDateChange(idx, e.target.value)}
+              />
+              <div className={styles.injectableActions}>
+                <button
+                  type="button"
+                  className={styles.iconButton}
+                  onClick={() => toggleDisable(idx)}
+                  aria-label={entry.disabled ? 'Enable entry' : 'Disable entry'}
+                >
+                  <GiSightDisabled size={20} />
+                </button>
+                <button
+                  type="button"
+                  className={styles.iconButton}
+                  onClick={() => deleteEntry(idx)}
+                  aria-label="Delete entry"
+                >
+                  <FaRegTrashAlt size={20} />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-        <button type="button" className={styles.addButton} onClick={addEntry}>
-          Add another
-        </button>
-        <button type="submit" className={styles.saveButton}>
-          Save
-        </button>
-        {saved && <div className={styles.savedMessage}>Schedule saved!</div>}
-      </form>
+          ))}
+          <button type="button" className={styles.addButton} onClick={addEntry}>
+            Add another
+          </button>
+          <button type="submit" className={styles.saveButton}>
+            Save
+          </button>
+          {saved && <div className={styles.savedMessage}>Schedule saved!</div>}
+        </form>
       )}
     </>
   );
