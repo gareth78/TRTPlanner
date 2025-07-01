@@ -4,12 +4,7 @@
   left: 0;
   width: min(80vw, 250px);
   height: 100vh;
-  background: linear-gradient(
-    180deg,
-    #f0fdfa 0%,
-    var(--accent-primary) 60%,
-    #0e766c 100%
-  );
+  background: var(--sidebar-gradient);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   display: flex;
@@ -32,9 +27,9 @@
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
-  background: #ffffff;
+  background: var(--sidebar-bg);
   border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .title {
@@ -69,6 +64,7 @@
 
 .link:hover {
   background: var(--hover-bg);
+  color: var(--sidebar-text);
   padding-left: 0.75rem;
   transform: scale(1.05);
 }
@@ -82,13 +78,14 @@
 .version {
   position: absolute;
   bottom: 1rem;
-  left: 1rem;
+  left: 0;
+  width: 100%;
   font-size: 0.875rem;
-  color: #ffffff;
+  color: var(--sidebar-text);
   font-style: italic;
-  border-top: 1px solid #475569;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
   padding-top: 0.5rem;
-  width: calc(100% - 2rem);
 }
 
 .toggleButton {
