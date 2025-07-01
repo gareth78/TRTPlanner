@@ -77,3 +77,4 @@
 - 2025-07-01 10:34 · Update config and metadata to reflect MediTrack branding · v0.1.0041
 - 2025-07-01 10:49 · Unspecified task · v0.1.0042
 - 2025-07-01 10:51 · Final sweep to remove leftover TRT branding · v0.1.0043
+- 2025-07-01 14:35 · Unspecified task · v0.1.0044
