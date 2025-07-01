@@ -11,7 +11,7 @@ MediTrack is a self‑hosted medical tracking app built with **React** and **Typ
 - Redux Toolkit with redux‑persist
 - react‑router for navigation
 - react‑icons for UI icons
-- Firebase anonymous authentication for schedule syncing
+- Firebase anonymous authentication for schedule syncing, with optional email/password accounts
 
 ## Features
 
@@ -138,3 +138,5 @@ The MediTrack team
 - 2025-07-01 00:16 · Improve version display layout and styling in sidebar · v0.1.0022
 - 2025-07-01 00:24 · Unspecified task · v0.1.0023
 - 2025-07-01 00:25 · Reintroduce share-modal.js with null-safe listener · v0.1.0024
+- 2025-07-01 00:45 · Unspecified task · v0.1.0025
+- 2025-07-01 00:48 · Add email/password signup and login with anonymous account linking · v0.1.0026

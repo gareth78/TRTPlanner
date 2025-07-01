@@ -5,6 +5,8 @@ import InjectionSchedule from './pages/InjectionSchedule';
 import OralSchedule from './pages/OralSchedule';
 import TravelPlans from './pages/TravelPlans';
 import Config from './pages/Config';
+import Signup from './components/Auth/Signup';
+import Login from './components/Auth/Login';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
             <Route path="/oral" element={<OralSchedule />} />
             <Route path="/travel" element={<TravelPlans />} />
             <Route path="/config" element={<Config />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </div>
