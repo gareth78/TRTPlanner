@@ -1,123 +1,116 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import handleLogin from '../services/auth';
-import Logo from '../assets/MediTrack_logo_svg.svg';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Logo from "../assets/MediTrack_logo_svg.svg";
+import handleLogin from "@/services/auth";
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
-function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await handleLogin(email, password);
-      setError('');
-      window.location.href = '/dashboard';
+      navigate("/dashboard");
     } catch {
-      setError('Invalid username or password');
+      alert("Invalid credentials");
     }
   };
 
-  const loginAsGuest = () => {
-    localStorage.setItem('access_token', 'guest_token');
-    window.location.href = '/dashboard';
-  };
-
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img src={Logo} alt="MediTrack" className="mx-auto h-10 w-auto" />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <img className="mx-auto h-12 w-auto" src={Logo} alt="MediTrack" />
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={onSubmit} className="space-y-6">
-          <div>
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="email"
-            >
-              Email address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                className="block text-sm font-medium leading-6 text-gray-900"
-                htmlFor="password"
-              >
-                Password
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={onSubmit}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
               </label>
-              <div className="text-sm">
-                <button
-                  type="button"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot password?
-                </button>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 
+                             rounded-md shadow-sm placeholder-gray-400 focus:outline-none 
+                             focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
               </div>
             </div>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
-          {error && <div className="text-sm text-red-600">{error}</div>}
 
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 
+                             rounded-md shadow-sm placeholder-gray-400 focus:outline-none 
+                             focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
 
-        <div className="mt-4">
-          <button
-            type="button"
-            onClick={loginAsGuest}
-            className="flex w-full justify-center rounded-md bg-accent-secondary px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-pink-500"
-          >
-            Continue as Guest
-          </button>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent 
+                           rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 
+                           hover:bg-indigo-700 focus:outline-none focus:ring-2 
+                           focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-600">
+            Don’t have an account?{" "}
+            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Register here
+            </a>
+          </p>
         </div>
-
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{' '}
-          <Link
-            to="/signup"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
-            Create an account
-          </Link>
-        </p>
       </div>
     </div>
   );
 }
-
-export default LoginPage;
