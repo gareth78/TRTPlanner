@@ -79,3 +79,5 @@
 - 2025-07-01 10:51 · Final sweep to remove leftover TRT branding · v0.1.0043
 - 2025-07-01 14:35 · Unspecified task · v0.1.0044
 - 2025-07-01 15:13 · Unspecified task · v0.1.0045
+- 2025-07-01 15:49 · Unspecified task · v0.1.0046
+- 2025-07-01 15:51 · Redesign login screen to match modern gradient layout with MediTrack logo and styled inputs · v0.1.0047
