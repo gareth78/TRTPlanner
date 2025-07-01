@@ -12,6 +12,7 @@ MediTrack is a self‑hosted medical tracking app built with **React** and **Typ
 - react‑router for navigation
 - react‑icons for UI icons
 - Firebase anonymous authentication for schedule syncing, with optional email/password accounts
+- Firestore data is stored under each user's UID so schedules remain private
 
 ## Features
 
@@ -73,7 +74,7 @@ The current version is tracked in `src/version.ts`. Each commit bumps the patch 
 
 ## Privacy
 
-MediTrack does not send data anywhere. All configuration and schedules are stored in the browser via `localStorage`.
+All configuration is stored locally in the browser. If you sign in, schedule data is also synced to Firestore under your personal UID.
 
 ## Author
 
@@ -148,3 +149,5 @@ The MediTrack team
 - 2025-07-01 01:38 · Add branded login screen with anonymous and email/password auth options · v0.1.0032
 - 2025-07-01 01:50 · Unspecified task · v0.1.0033
 - 2025-07-01 01:54 · Redesign login flow and isolate user data in Firebase · v0.1.0034
+- 2025-07-01 02:02 · Unspecified task · v0.1.0035
+- 2025-07-01 02:05 · Scope Firestore access to each user’s UID to isolate data · v0.1.0036
