@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaHome, FaSyringe, FaPlane, FaCog } from 'react-icons/fa';
 import { GiMedicines } from 'react-icons/gi';
@@ -6,6 +6,8 @@ import { MdMenu, MdClose } from 'react-icons/md';
 import version from '../version';
 import logo from '../assets/MediTrack_logo_svg.svg';
 import AuthStatus from '../components/AuthStatus';
+import { useUser } from '../UserContext';
+import storageKey from '../storage';
 import styles from './Sidebar.module.css';
 import useOutsideClick from '../hooks/useOutsideClick';
 
@@ -15,17 +17,20 @@ function Sidebar() {
   const [hasOrals, setHasOrals] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const { uid } = useUser();
 
-  const checkMedications = () => {
+  const checkMedications = useCallback(() => {
     try {
-      const cfgRaw = localStorage.getItem('configSettings');
+      const cfgRaw = localStorage.getItem(storageKey(uid, 'configSettings'));
       const cfg = cfgRaw ? JSON.parse(cfgRaw) : {};
       const inj = Array.isArray(cfg.injectables)
         ? cfg.injectables
-        : JSON.parse(localStorage.getItem('injectables') || '[]');
+        : JSON.parse(
+            localStorage.getItem(storageKey(uid, 'injectables')) || '[]',
+          );
       const oral = Array.isArray(cfg.orals)
         ? cfg.orals
-        : JSON.parse(localStorage.getItem('orals') || '[]');
+        : JSON.parse(localStorage.getItem(storageKey(uid, 'orals')) || '[]');
 
       setHasInjectables(
         Array.isArray(inj) &&
@@ -39,22 +44,22 @@ function Sidebar() {
       setHasInjectables(false);
       setHasOrals(false);
     }
-  };
+  }, [uid]);
 
   useEffect(() => {
     checkMedications();
     const handle = (e: StorageEvent) => {
       if (
-        e.key === 'injectables' ||
-        e.key === 'orals' ||
-        e.key === 'configSettings'
+        e.key === storageKey(uid, 'injectables') ||
+        e.key === storageKey(uid, 'orals') ||
+        e.key === storageKey(uid, 'configSettings')
       ) {
         checkMedications();
       }
     };
     window.addEventListener('storage', handle);
     return () => window.removeEventListener('storage', handle);
-  }, [open]);
+  }, [open, uid, checkMedications]);
 
   const toggle = () => {
     checkMedications();

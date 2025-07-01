@@ -70,3 +70,4 @@
 - 2025-07-01 01:54 · Redesign login flow and isolate user data in Firebase · v0.1.0034
 - 2025-07-01 02:02 · Unspecified task · v0.1.0035
 - 2025-07-01 02:05 · Scope Firestore access to each user’s UID to isolate data · v0.1.0036
+- 2025-07-01 08:29 · Unspecified task · v0.1.0037
