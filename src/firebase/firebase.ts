@@ -1,6 +1,18 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
-import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  linkWithCredential,
+  EmailAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+  type User,
+} from 'firebase/auth';
+import type { FirebaseError } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 
 // Your web app's Firebase configuration
@@ -20,6 +32,11 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const analytics = getAnalytics(app);
 
+// Use local persistence so sessions survive reloads
+setPersistence(auth, browserLocalPersistence).catch((err) => {
+  console.error('Failed to set persistence:', err);
+});
+
 // Sign in anonymously on startup if no user is signed in
 if (!auth.currentUser) {
   signInAnonymously(auth).catch((err) => {
@@ -28,9 +45,9 @@ if (!auth.currentUser) {
 }
 
 // Listen for auth state changes
-export function initFirebaseAuth(cb: (uid: string | null) => void) {
+export function initFirebaseAuth(cb: (user: User | null) => void) {
   return onAuthStateChanged(auth, (user) => {
-    cb(user ? user.uid : null);
+    cb(user);
   });
 }
 
@@ -47,4 +64,52 @@ export async function saveSchedule(
 export async function loadSchedule(uid: string, drugName: string) {
   const snap = await getDoc(doc(db, 'users', uid, 'schedules', drugName));
   return snap.exists() ? snap.data() : null;
+}
+
+// Create account or link anonymous user to email/password
+export async function signUpWithEmail(email: string, password: string) {
+  if (auth.currentUser && auth.currentUser.isAnonymous) {
+    const cred = EmailAuthProvider.credential(email, password);
+    try {
+      const res = await linkWithCredential(auth.currentUser, cred);
+      return res.user;
+    } catch (err: unknown) {
+      const { code } = err as FirebaseError;
+      if (code === 'auth/credential-already-in-use') {
+        const userCred = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        return userCred.user;
+      }
+      throw err;
+    }
+  }
+  const res = await createUserWithEmailAndPassword(auth, email, password);
+  return res.user;
+}
+
+// Login user, linking anonymous account if present
+export async function loginWithEmail(email: string, password: string) {
+  if (auth.currentUser && auth.currentUser.isAnonymous) {
+    const cred = EmailAuthProvider.credential(email, password);
+    try {
+      const res = await linkWithCredential(auth.currentUser, cred);
+      return res.user;
+    } catch (err: unknown) {
+      const { code } = err as FirebaseError;
+      if (code === 'auth/credential-already-in-use') {
+        const userCred = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        return userCred.user;
+      }
+      throw err;
+    }
+  }
+  const res = await signInWithEmailAndPassword(auth, email, password);
+  return res.user;
 }
