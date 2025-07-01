@@ -4,8 +4,6 @@
 
 MediTrack is a self‑hosted medical tracking app built with **React** and **TypeScript** using Vite. It stores all data locally in the browser and requires no backend services. The app lets you configure medications and plan upcoming doses through interactive calendars.
 
-This project was previously named **TRT Planner**.
-
 ## Tech Stack
 
 - React 19 + TypeScript
@@ -157,3 +155,4 @@ The MediTrack team
 - 2025-07-01 10:22 · Unspecified task · v0.1.0038
 - 2025-07-01 10:26 · Rename app from TRT Planner to MediTrack · v0.1.0039
 - 2025-07-01 10:33 · Unspecified task · v0.1.0040
+- 2025-07-01 10:49 · Unspecified task · v0.1.0042
