@@ -75,3 +75,5 @@
 - 2025-07-01 10:26 · Rename app from TRT Planner to MediTrack · v0.1.0039
 - 2025-07-01 10:33 · Unspecified task · v0.1.0040
 - 2025-07-01 10:34 · Update config and metadata to reflect MediTrack branding · v0.1.0041
+- 2025-07-01 10:49 · Unspecified task · v0.1.0042
+- 2025-07-01 10:51 · Final sweep to remove leftover TRT branding · v0.1.0043
