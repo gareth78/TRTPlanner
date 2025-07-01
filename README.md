@@ -146,3 +146,5 @@ The MediTrack team
 - 2025-07-01 01:28 · Implement email/password login form and logout flow with auth state management · v0.1.0030
 - 2025-07-01 01:34 · Unspecified task · v0.1.0031
 - 2025-07-01 01:38 · Add branded login screen with anonymous and email/password auth options · v0.1.0032
+- 2025-07-01 01:50 · Unspecified task · v0.1.0033
+- 2025-07-01 01:54 · Redesign login flow and isolate user data in Firebase · v0.1.0034

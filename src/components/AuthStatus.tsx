@@ -1,33 +1,12 @@
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
-import LoginForm from './Auth/LoginForm';
+import { useUser } from '../UserContext';
 
 function AuthStatus() {
-  const [user, setUser] = useState<User | null>(auth.currentUser);
-  const [showLogin, setShowLogin] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
-      if (usr) setShowLogin(false);
-    });
-    return () => unsubscribe();
-  }, []);
+  const { user } = useUser();
 
   if (!user) {
-    return (
-      <div className="flex flex-col items-start gap-2 text-sm text-gray-700">
-        <button
-          type="button"
-          className="text-blue-600 underline"
-          onClick={() => setShowLogin((v) => !v)}
-        >
-          {showLogin ? 'Close' : 'Login'}
-        </button>
-        {showLogin && <LoginForm />}
-      </div>
-    );
+    return null;
   }
 
   const label = user.email || (user.isAnonymous ? 'Anonymous' : 'Unknown');

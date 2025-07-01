@@ -1,141 +1,280 @@
 import { useState } from 'react';
+import logo from '../../assets/MediTrack_logo_svg.svg';
 import {
-  signInAnonymously,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
-import logo from '../../assets/meditrack-logo-horizontal.png';
+  loginAnonymously,
+  loginWithEmail,
+  signUpWithEmail,
+  loginWithGoogle,
+  loginWithFacebook,
+  resetPassword,
+} from '../../firebase/firebase';
 
 function LoginScreen() {
-  const [mode, setMode] = useState<'anon' | 'email'>('anon');
-  const [emailMode, setEmailMode] = useState<'login' | 'signup'>('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  let submitLabel = '';
-  if (loading) {
-    submitLabel = emailMode === 'signup' ? 'Creating account...' : 'Signing in...';
-  } else {
-    submitLabel = emailMode === 'signup' ? 'Sign Up' : 'Login';
-  }
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupPass, setSignupPass] = useState('');
+  const [signupError, setSignupError] = useState('');
+  const [signupLoading, setSignupLoading] = useState(false);
+
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPass, setLoginPass] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  const [socialLoading, setSocialLoading] = useState(false);
+  const [resetMsg, setResetMsg] = useState('');
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSignupError('');
+    setResetMsg('');
+    setSignupLoading(true);
+    try {
+      await signUpWithEmail(signupEmail, signupPass);
+    } catch (err: unknown) {
+      if (err instanceof Error) setSignupError(err.message);
+      else setSignupError(String(err));
+    } finally {
+      setSignupLoading(false);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    setResetMsg('');
+    setLoginLoading(true);
+    try {
+      await loginWithEmail(loginEmail, loginPass);
+    } catch (err: unknown) {
+      if (err instanceof Error) setLoginError(err.message);
+      else setLoginError(String(err));
+    } finally {
+      setLoginLoading(false);
+    }
+  };
 
   const handleAnon = async () => {
-    setError('');
-    setLoading(true);
+    setResetMsg('');
+    setSignupError('');
+    setLoginError('');
+    setSocialLoading(true);
     try {
-      await signInAnonymously(auth);
-    } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError(String(err));
+      await loginAnonymously();
     } finally {
-      setLoading(false);
+      setSocialLoading(false);
     }
   };
 
-  const handleEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError('Email and password are required');
-      return;
-    }
-    setError('');
-    setLoading(true);
+  const handleGoogle = async () => {
+    setSocialLoading(true);
+    setSignupError('');
+    setLoginError('');
+    setResetMsg('');
     try {
-      if (emailMode === 'signup') {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError(String(err));
+      await loginWithGoogle();
+    } catch (err) {
+      if (err instanceof Error) setLoginError(err.message);
+      else setLoginError(String(err));
     } finally {
-      setLoading(false);
+      setSocialLoading(false);
     }
   };
 
-  const activeTab =
-    'px-4 py-2 font-medium rounded-t border-b-2 border-accent-primary text-accent-primary';
-  const inactiveTab =
-    'px-4 py-2 font-medium rounded-t border-b-2 border-transparent text-gray-500 hover:text-accent-primary';
+  const handleFacebook = async () => {
+    setSocialLoading(true);
+    setSignupError('');
+    setLoginError('');
+    setResetMsg('');
+    try {
+      await loginWithFacebook();
+    } catch (err) {
+      if (err instanceof Error) setLoginError(err.message);
+      else setLoginError(String(err));
+    } finally {
+      setSocialLoading(false);
+    }
+  };
+
+  const handleReset = async () => {
+    if (!loginEmail) return;
+    setResetMsg('');
+    try {
+      await resetPassword(loginEmail);
+      setResetMsg('Password reset email sent');
+    } catch (err) {
+      if (err instanceof Error) setResetMsg(err.message);
+      else setResetMsg(String(err));
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white rounded shadow-lg p-6">
-        <img src={logo} alt="MediTrack logo" className="mx-auto mb-6 w-48" />
-        <div className="flex justify-center mb-6 space-x-4 border-b">
-          <button
-            type="button"
-            className={mode === 'anon' ? activeTab : inactiveTab}
-            onClick={() => setMode('anon')}
-          >
-            Anonymous
-          </button>
-          <button
-            type="button"
-            className={mode === 'email' ? activeTab : inactiveTab}
-            onClick={() => setMode('email')}
-          >
-            Email Login
-          </button>
-        </div>
-        {mode === 'anon' && (
-          <div className="text-center">
-            {error && <div className="mb-4 text-sm text-red-600">{error}</div>}
-            <button
-              type="button"
-              onClick={handleAnon}
-              disabled={loading}
-              className="w-full rounded bg-accent-primary py-2 text-white disabled:opacity-60"
-            >
-              {loading ? 'Signing in...' : 'Continue Anonymously'}
-            </button>
-          </div>
-        )}
-        {mode === 'email' && (
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <img src={logo} alt="MediTrack logo" className="w-48 mb-8" />
+      <div className="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div
+          id="signup-card"
+          className="bg-white rounded shadow p-6 flex flex-col"
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Sign Up</h2>
           <form
-            onSubmit={handleEmail}
-            className="flex flex-col space-y-3"
+            onSubmit={handleSignup}
+            className="flex flex-col space-y-3 flex-1"
           >
             <input
               type="email"
               className="rounded border p-2"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={signupEmail}
+              onChange={(e) => setSignupEmail(e.target.value)}
               required
             />
             <input
               type="password"
               className="rounded border p-2"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={signupPass}
+              onChange={(e) => setSignupPass(e.target.value)}
               required
             />
-            {error && <div className="text-sm text-red-600">{error}</div>}
+            {signupError && (
+              <div className="text-sm text-red-600">{signupError}</div>
+            )}
             <button
               type="submit"
-              disabled={loading}
-              className="rounded bg-accent-primary p-2 text-white disabled:opacity-60"
+              disabled={signupLoading}
+              className="rounded bg-[#15b39c] p-2 text-white disabled:opacity-60"
             >
-              {submitLabel}
+              {signupLoading ? 'Creating account...' : 'SIGN UP'}
+            </button>
+          </form>
+          <button
+            type="button"
+            className="mt-2 text-sm text-[#f37ada] underline"
+            onClick={() =>
+              document
+                .getElementById('login-card')
+                ?.scrollIntoView({ behavior: 'smooth' })
+            }
+          >
+            Already a user? LOGIN
+          </button>
+          <div className="my-4 flex items-center justify-center gap-2 text-sm text-gray-500">
+            <span className="border-t flex-1" />
+            OR
+            <span className="border-t flex-1" />
+          </div>
+          <div className="flex justify-center gap-4">
+            <button
+              type="button"
+              onClick={handleGoogle}
+              disabled={socialLoading}
+              className="rounded bg-red-500 text-white px-3 py-1 disabled:opacity-60"
+            >
+              Google
             </button>
             <button
               type="button"
-              className="text-sm text-accent-secondary underline mt-1"
-              onClick={() =>
-                setEmailMode((m) => (m === 'login' ? 'signup' : 'login'))
-              }
+              onClick={handleFacebook}
+              disabled={socialLoading}
+              className="rounded bg-blue-600 text-white px-3 py-1 disabled:opacity-60"
             >
-              {emailMode === 'login'
-                ? "Don't have an account? Sign up"
-                : 'Already have an account? Login'}
+              Facebook
+            </button>
+          </div>
+        </div>
+        <div
+          id="login-card"
+          className="bg-white rounded shadow p-6 flex flex-col"
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
+          <form
+            onSubmit={handleLogin}
+            className="flex flex-col space-y-3 flex-1"
+          >
+            <input
+              type="email"
+              className="rounded border p-2"
+              placeholder="Email"
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              className="rounded border p-2"
+              placeholder="Password"
+              value={loginPass}
+              onChange={(e) => setLoginPass(e.target.value)}
+              required
+            />
+            {loginError && (
+              <div className="text-sm text-red-600">{loginError}</div>
+            )}
+            <button
+              type="submit"
+              disabled={loginLoading}
+              className="rounded bg-[#15b39c] p-2 text-white disabled:opacity-60"
+            >
+              {loginLoading ? 'Signing in...' : 'LOGIN'}
             </button>
           </form>
-        )}
+          <div className="flex justify-between text-sm mt-2">
+            <button
+              type="button"
+              className="text-[#15b39c] underline"
+              onClick={handleReset}
+            >
+              Forgot Password?
+            </button>
+            <button
+              type="button"
+              className="text-[#f37ada] underline"
+              onClick={() =>
+                document
+                  .getElementById('signup-card')
+                  ?.scrollIntoView({ behavior: 'smooth' })
+              }
+            >
+              Need an account? SIGN UP
+            </button>
+          </div>
+          {resetMsg && (
+            <div className="mt-2 text-sm text-gray-700">{resetMsg}</div>
+          )}
+          <div className="my-4 flex items-center justify-center gap-2 text-sm text-gray-500">
+            <span className="border-t flex-1" />
+            OR
+            <span className="border-t flex-1" />
+          </div>
+          <div className="flex justify-center gap-4">
+            <button
+              type="button"
+              onClick={handleGoogle}
+              disabled={socialLoading}
+              className="rounded bg-red-500 text-white px-3 py-1 disabled:opacity-60"
+            >
+              Google
+            </button>
+            <button
+              type="button"
+              onClick={handleFacebook}
+              disabled={socialLoading}
+              className="rounded bg-blue-600 text-white px-3 py-1 disabled:opacity-60"
+            >
+              Facebook
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="mt-6 text-center">
+        <button
+          type="button"
+          className="text-[#15b39c] underline"
+          onClick={handleAnon}
+          disabled={socialLoading}
+        >
+          OR continue anonymously
+        </button>
       </div>
     </div>
   );
