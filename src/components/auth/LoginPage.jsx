@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import handleLogin from '@/services/auth';
+import handleLogin from '../../services/auth';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -76,8 +76,7 @@ export default function LoginPage() {
                 </button>
               </form>
               <p className="mt-3 text-center small">
-                Don’t have an account?{' '}
-                <a href="#">Register here</a>
+                Don’t have an account? <a href="#">Register here</a>
               </p>
             </div>
           </div>

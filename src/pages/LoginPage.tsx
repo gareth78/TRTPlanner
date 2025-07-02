@@ -1,20 +1,21 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Logo from "../assets/MediTrack_logo_svg.svg";
-import handleLogin from "@/services/auth";
+/* eslint-disable jsx-a11y/label-has-associated-control, jsx-a11y/anchor-is-valid, no-alert */
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../assets/MediTrack_logo_svg.svg';
+import handleLogin from '../services/auth';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await handleLogin(email, password);
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch {
-      alert("Invalid credentials");
+      alert('Invalid credentials');
     }
   };
 
@@ -31,7 +32,10 @@ export default function LoginPage() {
         <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email address
               </label>
               <div className="mt-1">
@@ -51,7 +55,10 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1">
@@ -78,13 +85,19 @@ export default function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Remember me
                 </label>
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a
+                  href="#"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
                   Forgot your password?
                 </a>
               </div>
@@ -104,8 +117,11 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Don’t have an account?{" "}
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Don’t have an account?{' '}
+            <a
+              href="#"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Register here
             </a>
           </p>

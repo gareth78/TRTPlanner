@@ -1,10 +1,8 @@
+import { loginWithEmail } from '../firebase/firebase';
+
 export default async function handleLogin(
-  username: string,
+  email: string,
   password: string,
 ): Promise<void> {
-  if (username === 'admin' && password === 'password') {
-    localStorage.setItem('access_token', 'mock_token');
-  } else {
-    throw new Error('Invalid credentials');
-  }
+  await loginWithEmail(email, password);
 }
