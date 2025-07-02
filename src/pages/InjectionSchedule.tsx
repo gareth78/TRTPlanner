@@ -85,6 +85,7 @@ function InjectionSchedule() {
           return edit;
         });
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load schedules', err);
       } finally {
         setLoading(false);

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { useEffect, useState } from 'react';
 import { GiSightDisabled } from 'react-icons/gi';
 import { FaRegTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
